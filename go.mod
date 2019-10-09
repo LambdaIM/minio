@@ -1,4 +1,4 @@
-module github.com/lambdaIM/minio
+module github.com/LambdaIM/minio
 
 go 1.12
 
