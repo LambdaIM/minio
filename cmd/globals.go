@@ -275,6 +275,7 @@ var (
 	globalSweepHealState    *allHealState
 
 	// Add new variable global values here.
+	globalIgnorePolicyCheck = false
 )
 
 // global colors.

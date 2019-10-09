@@ -781,7 +781,8 @@ func (sys *IAMSys) Init(objAPI ObjectLayer) error {
 
 // DeletePolicy - deletes a canned policy from backend or etcd.
 func (sys *IAMSys) DeletePolicy(policyName string) error {
-	objectAPI := newObjectLayerFn()
+	//objectAPI := newObjectLayerFn()
+	objectAPI := newIamObjectLayerFn()
 	if objectAPI == nil {
 		return errServerNotInitialized
 	}
@@ -812,7 +813,8 @@ func (sys *IAMSys) DeletePolicy(policyName string) error {
 
 // ListPolicies - lists all canned policies.
 func (sys *IAMSys) ListPolicies() (map[string][]byte, error) {
-	objectAPI := newObjectLayerFn()
+	//objectAPI := newObjectLayerFn()
+	objectAPI := newIamObjectLayerFn()
 	if objectAPI == nil {
 		return nil, errServerNotInitialized
 	}
@@ -835,7 +837,8 @@ func (sys *IAMSys) ListPolicies() (map[string][]byte, error) {
 
 // SetPolicy - sets a new name policy.
 func (sys *IAMSys) SetPolicy(policyName string, p iampolicy.Policy) error {
-	objectAPI := newObjectLayerFn()
+	//objectAPI := newObjectLayerFn()
+	objectAPI := newIamObjectLayerFn()
 	if objectAPI == nil {
 		return errServerNotInitialized
 	}
@@ -865,7 +868,8 @@ func (sys *IAMSys) SetPolicy(policyName string, p iampolicy.Policy) error {
 
 // DeleteUser - delete user (only for long-term users not STS users).
 func (sys *IAMSys) DeleteUser(accessKey string) error {
-	objectAPI := newObjectLayerFn()
+	//objectAPI := newObjectLayerFn()
+	objectAPI := newIamObjectLayerFn()
 	if objectAPI == nil {
 		return errServerNotInitialized
 	}
@@ -900,7 +904,8 @@ func (sys *IAMSys) DeleteUser(accessKey string) error {
 
 // SetTempUser - set temporary user credentials, these credentials have an expiry.
 func (sys *IAMSys) SetTempUser(accessKey string, cred auth.Credentials, policyName string) error {
-	objectAPI := newObjectLayerFn()
+	//objectAPI := newObjectLayerFn()
+	objectAPI := newIamObjectLayerFn()
 	if objectAPI == nil {
 		return errServerNotInitialized
 	}
@@ -956,7 +961,8 @@ func (sys *IAMSys) SetTempUser(accessKey string, cred auth.Credentials, policyNa
 
 // ListUsers - list all users.
 func (sys *IAMSys) ListUsers() (map[string]madmin.UserInfo, error) {
-	objectAPI := newObjectLayerFn()
+	//objectAPI := newObjectLayerFn()
+	objectAPI := newIamObjectLayerFn()
 	if objectAPI == nil {
 		return nil, errServerNotInitialized
 	}
@@ -978,7 +984,8 @@ func (sys *IAMSys) ListUsers() (map[string]madmin.UserInfo, error) {
 
 // SetUserStatus - sets current user status, supports disabled or enabled.
 func (sys *IAMSys) SetUserStatus(accessKey string, status madmin.AccountStatus) error {
-	objectAPI := newObjectLayerFn()
+	//objectAPI := newObjectLayerFn()
+	objectAPI := newIamObjectLayerFn()
 	if objectAPI == nil {
 		return errServerNotInitialized
 	}
@@ -1017,7 +1024,8 @@ func (sys *IAMSys) SetUserStatus(accessKey string, status madmin.AccountStatus) 
 
 // SetUser - set user credentials and policy.
 func (sys *IAMSys) SetUser(accessKey string, uinfo madmin.UserInfo) error {
-	objectAPI := newObjectLayerFn()
+	//objectAPI := newObjectLayerFn()
+	objectAPI := newIamObjectLayerFn()
 	if objectAPI == nil {
 		return errServerNotInitialized
 	}
@@ -1052,7 +1060,8 @@ func (sys *IAMSys) SetUser(accessKey string, uinfo madmin.UserInfo) error {
 
 // SetUserSecretKey - sets user secret key
 func (sys *IAMSys) SetUserSecretKey(accessKey string, secretKey string) error {
-	objectAPI := newObjectLayerFn()
+	//objectAPI := newObjectLayerFn()
+	objectAPI := newIamObjectLayerFn()
 	if objectAPI == nil {
 		return errServerNotInitialized
 	}
@@ -1096,7 +1105,8 @@ func (sys *IAMSys) GetUser(accessKey string) (cred auth.Credentials, ok bool) {
 // PolicyDB. This function applies only long-term users. For STS
 // users, policy is set directly by called sys.policyDBSet().
 func (sys *IAMSys) PolicyDBSet(name, policy string) error {
-	objectAPI := newObjectLayerFn()
+	//objectAPI := newObjectLayerFn()
+	objectAPI := newIamObjectLayerFn()
 	if objectAPI == nil {
 		return errServerNotInitialized
 	}
@@ -1148,7 +1158,8 @@ func (sys *IAMSys) PolicyDBGet(name string) (string, error) {
 		return "", errInvalidArgument
 	}
 
-	objectAPI := newObjectLayerFn()
+	//objectAPI := newObjectLayerFn()
+	objectAPI := newIamObjectLayerFn()
 	if objectAPI == nil {
 		return "", errServerNotInitialized
 	}

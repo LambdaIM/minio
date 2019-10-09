@@ -139,6 +139,10 @@ type S3 struct {
 	host string
 }
 
+func NewS3(host string) *S3 {
+	return &S3{host: host}
+}
+
 // Name implements Gateway interface.
 func (g *S3) Name() string {
 	return s3Backend

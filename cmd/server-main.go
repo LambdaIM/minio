@@ -390,6 +390,11 @@ func serverMain(ctx *cli.Context) {
 		initDailySweeper()
 	}
 
+	// Once endpoints are finalized, initialize the new iam object api.
+	globalIamObjLayerMutex.Lock()
+	globalIamObjectAPI = newObject
+	globalIamObjLayerMutex.Unlock()
+
 	globalObjLayerMutex.Lock()
 	globalObjectAPI = newObject
 	globalObjLayerMutex.Unlock()

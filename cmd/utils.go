@@ -25,6 +25,7 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"github.com/minio/minio/pkg/auth"
 	"io"
 	"io/ioutil"
 	"net"
@@ -415,12 +416,22 @@ func ceilFrac(numerator, denominator int64) (ceil int64) {
 	return
 }
 
+func getCreds(r *http.Request) auth.Credentials {
+	var cred auth.Credentials
+	switch getRequestAuthType(r) {
+	case authTypeSigned, authTypePresigned:
+		cred, _, _ = getReqAccessKeyV4(r, "", serviceS3)
+	}
+	return cred
+}
+
 // Returns context with ReqInfo details set in the context.
 func newContext(r *http.Request, w http.ResponseWriter, api string) context.Context {
 	vars := mux.Vars(r)
 	bucket := vars["bucket"]
 	object := vars["object"]
 	prefix := vars["prefix"]
+	cred := getCreds(r)
 
 	if prefix != "" {
 		object = prefix
@@ -435,7 +446,8 @@ func newContext(r *http.Request, w http.ResponseWriter, api string) context.Cont
 		BucketName:   bucket,
 		ObjectName:   object,
 	}
-	return logger.SetReqInfo(r.Context(), reqInfo)
+	ctx := logger.SetReqInfo(r.Context(), reqInfo)
+	return context.WithValue(ctx, "cred", cred)
 }
 
 // isNetworkOrHostDown - if there was a network error or if the host is down.

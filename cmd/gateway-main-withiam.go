@@ -19,10 +19,8 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"net/url"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 
 	"github.com/gorilla/mux"
@@ -38,65 +36,23 @@ func init() {
 }
 
 var (
-	gatewayCmd = cli.Command{
-		Name:            "gateway",
-		Usage:           "start object storage gateway",
+	iamGatewayCmd = cli.Command{
+		Name:            "iam-gateway",
+		Usage:           "start object storage gateway with iam enabled",
 		Flags:           append(ServerFlags, GlobalFlags...),
 		HideHelpCommand: true,
 	}
 )
 
-// RegisterGatewayCommand registers a new command for gateway.
-func RegisterGatewayCommand(cmd cli.Command) error {
+// RegisterIamGatewayCommand registers a new command for gateway.
+func RegisterIamGatewayCommand(cmd cli.Command) error {
 	cmd.Flags = append(append(cmd.Flags, ServerFlags...), GlobalFlags...)
-	gatewayCmd.Subcommands = append(gatewayCmd.Subcommands, cmd)
+	iamGatewayCmd.Subcommands = append(iamGatewayCmd.Subcommands, cmd)
 	return nil
 }
 
-// ParseGatewayEndpoint - Return endpoint.
-func ParseGatewayEndpoint(arg string) (endPoint string, secure bool, err error) {
-	schemeSpecified := len(strings.Split(arg, "://")) > 1
-	if !schemeSpecified {
-		// Default connection will be "secure".
-		arg = "https://" + arg
-	}
-
-	u, err := url.Parse(arg)
-	if err != nil {
-		return "", false, err
-	}
-
-	switch u.Scheme {
-	case "http":
-		return u.Host, false, nil
-	case "https":
-		return u.Host, true, nil
-	default:
-		return "", false, fmt.Errorf("Unrecognized scheme %s", u.Scheme)
-	}
-}
-
-// ValidateGatewayArguments - Validate gateway arguments.
-func ValidateGatewayArguments(serverAddr, endpointAddr string) error {
-	if err := CheckLocalServerAddr(serverAddr); err != nil {
-		return err
-	}
-
-	if endpointAddr != "" {
-		// Reject the endpoint if it points to the gateway handler itself.
-		sameTarget, err := sameLocalAddrs(endpointAddr, serverAddr)
-		if err != nil {
-			return err
-		}
-		if sameTarget {
-			return fmt.Errorf("endpoint points to the local gateway")
-		}
-	}
-	return nil
-}
-
-// StartGateway - handler for 'minio gateway <name>'.
-func StartGateway(ctx *cli.Context, gw Gateway) {
+// StartIamGateway - handler for 'minio iam-gateway <name>'.
+func StartIamGateway(ctx *cli.Context, gw Gateway) {
 	if gw == nil {
 		logger.FatalIf(errUnexpected, "Gateway implementation not initialized")
 	}
@@ -126,6 +82,7 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 	// Check and load TLS certificates.
 	var err error
 	globalPublicCerts, globalTLSCerts, globalIsSSL, err = getTLSConfig()
+	fmt.Println("-------is ssl---", globalIsSSL)
 	logger.FatalIf(err, "Invalid TLS certificate file")
 
 	// Check and load Root CAs.
@@ -159,11 +116,11 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 	}
 
 	enableConfigOps := gatewayName == "nas"
-	enableIAMOps := globalEtcdClient != nil
 
-	// Enable IAM admin APIs if etcd is enabled, if not just enable basic
+	// TODO disable admin api
+	// Enable IAM admin APIs, if not just enable basic
 	// operations such as profiling, server info etc.
-	registerAdminRouter(router, enableConfigOps, enableIAMOps)
+	registerAdminRouter(router, true, true)
 
 	// Add healthcheck router
 	registerHealthCheckRouter(router)
@@ -260,19 +217,21 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 	// Re-enable logging
 	logger.Disable = false
 
+	// TODO config this path from outside
+	// (yaiba) monkey hack, iam sys need local file operation
+	localFS, _ := NewFSObjectLayer("/tmp/minio-gw/")
 	// Create new IAM system.
 	globalIAMSys = NewIAMSys()
-	if enableIAMOps {
-		// Initialize IAM sys.
-		logger.LogIf(context.Background(), globalIAMSys.Init(newObject))
+	if err = globalIAMSys.Init(localFS); err != nil {
+		logger.Fatal(err, "Unable to initialize IAM system")
 	}
 
 	// Create new policy system.
 	globalPolicySys = NewPolicySys()
-
 	// Initialize policy system.
-	go globalPolicySys.Init(newObject)
+	go globalPolicySys.Init(localFS)
 
+	globalIgnorePolicyCheck = true
 	// Create new lifecycle system
 	globalLifecycleSys = NewLifecycleSys()
 
@@ -284,7 +243,6 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 
 	// Encryption support checks in gateway mode.
 	{
-
 		if (globalAutoEncryption || GlobalKMS != nil) && !newObject.IsEncryptionSupported() {
 			logger.Fatal(errInvalidArgument,
 				"Encryption support is requested but (%s) gateway does not support encryption", gw.Name())
@@ -298,7 +256,7 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 
 	// Once endpoints are finalized, initialize the new iam object api.
 	globalIamObjLayerMutex.Lock()
-	globalIamObjectAPI = newObject
+	globalIamObjectAPI = localFS
 	globalIamObjLayerMutex.Unlock()
 
 	// Once endpoints are finalized, initialize the new object api.
@@ -325,4 +283,8 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 	globalBootTime = UTCNow()
 
 	handleSignals()
+}
+
+func GetIamSys() *IAMSys {
+	return globalIAMSys
 }

@@ -88,7 +88,7 @@ func (sys *PolicySys) IsAllowed(args policy.Args) bool {
 	if globalIsGateway {
 		// When gateway is enabled, no cached value
 		// is used to validate bucket policies.
-		objAPI := newObjectLayerFn()
+		objAPI := newIamObjectLayerFn()
 		if objAPI != nil {
 			config, err := objAPI.GetBucketPolicy(context.Background(), args.BucketName)
 			if err == nil {

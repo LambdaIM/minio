@@ -47,12 +47,19 @@ var globalObjLayerMutex *sync.RWMutex
 // Global object layer, only accessed by newObjectLayerFn().
 var globalObjectAPI ObjectLayer
 
+// Global object layer mutex, used for safely updating iam object layer.
+var globalIamObjLayerMutex *sync.RWMutex
+
+// Global iamObject, only accessed by newIamObjectLayerFn()
+var globalIamObjectAPI ObjectLayer
+
 //Global cacheObjects, only accessed by newCacheObjectsFn().
 var globalCacheObjectAPI CacheObjectLayer
 
 func init() {
 	// Initialize this once per server initialization.
 	globalObjLayerMutex = &sync.RWMutex{}
+	globalIamObjLayerMutex = &sync.RWMutex{}
 }
 
 // Checks if the object is a directory, this logic uses

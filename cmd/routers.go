@@ -29,6 +29,13 @@ func newObjectLayerFn() (layer ObjectLayer) {
 	return
 }
 
+func newIamObjectLayerFn() (layer ObjectLayer) {
+	globalIamObjLayerMutex.RLock()
+	layer = globalIamObjectAPI
+	globalIamObjLayerMutex.RUnlock()
+	return
+}
+
 func newCacheObjectsFn() CacheObjectLayer {
 	return globalCacheObjectAPI
 }
