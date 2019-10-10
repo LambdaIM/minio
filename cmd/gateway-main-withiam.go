@@ -82,7 +82,6 @@ func StartIamGateway(ctx *cli.Context, gw Gateway) {
 	// Check and load TLS certificates.
 	var err error
 	globalPublicCerts, globalTLSCerts, globalIsSSL, err = getTLSConfig()
-	fmt.Println("-------is ssl---", globalIsSSL)
 	logger.FatalIf(err, "Invalid TLS certificate file")
 
 	// Check and load Root CAs.
