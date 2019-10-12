@@ -23,6 +23,12 @@ import * as actionsAlert from "../alert/actions"
 import InputGroup from "./InputGroup"
 import web from "../web"
 import { Redirect } from "react-router-dom"
+import { withI18n } from "react-i18next";
+
+
+
+
+
 
 export class Login extends React.Component {
   constructor(props) {
@@ -86,9 +92,14 @@ export class Login extends React.Component {
   componentWillUnmount() {
     document.body.classList.remove("is-guest")
   }
-
+  changelang(){
+    const { t, i18n } = this.props;
+    i18n.changeLanguage('zhch');
+  }
   render() {
     const { clearAlert, alert } = this.props
+    const { t, i18n } = this.props;
+    
     if (web.LoggedIn()) {
       return <Redirect to={"/"} />
     }
@@ -100,6 +111,7 @@ export class Login extends React.Component {
         {alertBox}
         <div className="l-wrap">
           <form onSubmit={this.handleSubmit.bind(this)}>
+          {t('Welcome to React')}
             <InputGroup
               value={this.state.accessKey}
               onChange={this.accessKeyChange.bind(this)}
@@ -151,4 +163,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   state => state,
   mapDispatchToProps
-)(Login)
+)(withI18n()(Login))

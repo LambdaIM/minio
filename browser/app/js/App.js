@@ -19,6 +19,9 @@ import { Route, Switch, Redirect } from "react-router-dom"
 import Browser from "./browser/Browser"
 import Login from "./browser/Login"
 import web from "./web"
+import i18n from './i18n'
+
+
 
 export const App = () => {
   return (
