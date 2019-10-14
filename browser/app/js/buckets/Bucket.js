@@ -37,7 +37,7 @@ export const Bucket = ({ bucket, isActive, selectBucket }) => {
       >
         {bucket}
       </a>
-      <BucketDropdown bucket={bucket}/>
+      
     </li>
   )
 }

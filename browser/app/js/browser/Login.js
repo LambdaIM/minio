@@ -37,6 +37,7 @@ export class Login extends React.Component {
       accessKey: "",
       secretKey: ""
     }
+    this.changelang=this.changelang.bind(this)
   }
 
   // Handle field changes
@@ -93,8 +94,11 @@ export class Login extends React.Component {
     document.body.classList.remove("is-guest")
   }
   changelang(){
+    console.log('---------')
     const { t, i18n } = this.props;
     i18n.changeLanguage('zhch');
+    this.forceUpdate();
+    
   }
   render() {
     const { clearAlert, alert } = this.props
@@ -111,7 +115,7 @@ export class Login extends React.Component {
         {alertBox}
         <div className="l-wrap">
           <form onSubmit={this.handleSubmit.bind(this)}>
-          {t('Welcome to React')}
+          {t('WelcometoReact')}
             <InputGroup
               value={this.state.accessKey}
               onChange={this.accessKeyChange.bind(this)}
@@ -139,7 +143,12 @@ export class Login extends React.Component {
             <button className="lw-btn" type="submit">
               <i className="fa fa-sign-in" />
             </button>
+            
           </form>
+          <br/>
+          <button className="sp-btn"  onClick={this.changelang}>
+              切换语言
+            </button>
         </div>
         <div className="l-footer">
           <a className="lf-logo" href="">
