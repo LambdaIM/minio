@@ -95,6 +95,32 @@
     }
 }
 
+.sp-btn {
+    
+    // border: 1px solid @white;
+    display: inline-block;
+    
+    font-size: 20px;
+    color: @white;
+    .transition(all);
+    .transition-duration(300ms);
+    opacity: 0.3;
+    background-color: transparent;
+    line-height: 45px;
+    padding: 0;
+    &:hover {
+        color: @white;
+        opacity: 0.8;
+        border-color: @white;
+    }
+
+    i {
+        display: block;
+        width: 100%;
+        padding-left: 3px;
+    }
+}
+
 /*------------------------------
     Chrome autofill fix
 -------------------------------*/

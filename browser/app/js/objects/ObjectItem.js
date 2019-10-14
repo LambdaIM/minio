@@ -33,6 +33,7 @@ export const ObjectItem = ({
   actionButtons,
   onClick
 }) => {
+  
   return (
     <div className={"fesl-row"} data-type={getDataType(name, contentType)}>
       <div className="fesl-item fesl-item-icon">

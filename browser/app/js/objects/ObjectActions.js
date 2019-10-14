@@ -62,13 +62,13 @@ export class ObjectActions extends React.Component {
       <Dropdown id={`obj-actions-${object.name}`}>
         <Dropdown.Toggle noCaret className="fia-toggle" />
         <Dropdown.Menu>
-          <a
+          {/* <a
             href=""
             className="fiad-action"
             onClick={this.shareObject.bind(this)}
           >
             <i className="fa fa-share-alt" />
-          </a>
+          </a> */}
           <a
             href=""
             className="fiad-action"

@@ -67,21 +67,8 @@ export const MainActions = ({
               </label>
             </a>
           </OverlayTrigger>
-          {loggedIn && (
-            <OverlayTrigger placement="left" overlay={makeBucketTooltip}>
-              <a
-                href="#"
-                id="show-make-bucket"
-                className="feba-btn feba-bucket"
-                onClick={e => {
-                  e.preventDefault()
-                  showMakeBucketModal()
-                }}
-              >
-                <i className="fa fa-hdd-o" />
-              </a>
-            </OverlayTrigger>
-          )}
+          
+          
         </Dropdown.Menu>
       </Dropdown>
     )

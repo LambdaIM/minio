@@ -6,12 +6,12 @@ import { reactI18nextModule } from "react-i18next";
 const resources = {
   en: {
     translation: {
-      "Welcome to React": "Welcome to React and react-i18next"
+      "WelcometoReact": "Welcome to React and react-i18next"
     }
   },
   zhch:{
     translation: {
-        "Welcome to React": "Welcome to React and react-i18next"
+        "WelcometoReact": "欢迎使用React and React-I18Next"
       }
 
   }
@@ -23,7 +23,7 @@ i18n
     resources,
     lng: "en",
 
-    keySeparator: false, // we do not use keys in form messages.welcome
+    // keySeparator: false, // we do not use keys in form messages.welcome
 
     interpolation: {
       escapeValue: false // react already safes from xss
