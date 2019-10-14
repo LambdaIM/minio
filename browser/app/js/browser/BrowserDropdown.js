@@ -102,11 +102,11 @@ export class BrowserDropdown extends React.Component {
                 Documentation <i className="fas fa-book" />
               </a>
             </li>
-            <li>
+            {/* <li>
               <a target="_blank" href="https://slack.min.io">
                 Ask for help <i className="fas fa-question-circle" />
               </a>
-            </li>
+            </li> */}
             <li>
               <a href="" id="show-about" onClick={this.showAbout.bind(this)}>
                 About <i className="fas fa-info-circle" />
@@ -118,7 +118,7 @@ export class BrowserDropdown extends React.Component {
                 />
               )}
             </li>
-            <li>
+            {/* <li>
               <a href="" onClick={this.showChangePassword.bind(this)}>
                 Change Password <i className="fas fa-cog" />
               </a>
@@ -128,7 +128,7 @@ export class BrowserDropdown extends React.Component {
                   hideChangePassword={this.hideChangePassword.bind(this)}
                 />
               )}
-            </li>
+            </li> */}
             <li>
               <a href="" id="logout" onClick={this.logout}>
                 Sign Out <i className="fas fa-sign-out-alt" />
