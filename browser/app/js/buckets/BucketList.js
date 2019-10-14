@@ -26,6 +26,7 @@ import { pathSlice } from "../utils"
 
 export class BucketList extends React.Component {
   componentWillMount() {
+    console.log('- - -')
     const { fetchBuckets, setBucketList, selectBucket } = this.props
     if (web.LoggedIn()) {
       fetchBuckets()

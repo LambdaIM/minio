@@ -43,10 +43,11 @@ export const SideBar = ({ sidebarOpen, clickOutside }) => {
       >
         <div className="fes-header clearfix hidden-sm hidden-xs">
           <img src={logo} alt="" />
-          <h2>Browser</h2>
+          <h2>S3</h2>
         </div>
+        <div>Lambda Simple Storage Service </div>
         <div className="fes-list">
-          {web.LoggedIn() && <BucketSearch />}
+          {web.LoggedIn() }
           <BucketList />
         </div>
         <Host />

@@ -37,6 +37,7 @@ export class Dropzone extends React.Component {
     // won't handle child elements correctly.
     const style = {
       height: "100%",
+      minHeight: "900px",
       borderWidth: "0",
       borderStyle: "dashed",
       borderColor: "#fff"
