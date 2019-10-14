@@ -60,7 +60,9 @@ export class Dropzone extends React.Component {
         disableClick={true}
         onDrop={this.onDrop.bind(this)}
       >
+        
         {this.props.children}
+        <div className="dragtip">Drag the file to this area to upload the file immediately</div>
       </ReactDropzone>
     )
   }

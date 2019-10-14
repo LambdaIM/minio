@@ -65,7 +65,7 @@ export const ObjectItem = ({
       </div>
       <div className="fesl-item fesl-item-size">{size}</div>
       <div className="fesl-item fesl-item-modified">{lastModified}</div>
-      <div className="fesl-item fesl-item-actions">{actionButtons}</div>
+      {/* <div className="fesl-item fesl-item-actions">{actionButtons}</div> */}
     </div>
   )
 }
