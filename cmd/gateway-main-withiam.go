@@ -216,8 +216,8 @@ func StartIamGateway(ctx *cli.Context, gw Gateway) {
 	logger.Disable = false
 
 	// TODO config this path from outside
-	// (yaiba) monkey hack, iam sys need local file operation
-	localFS, _ := NewFSObjectLayer("/tmp/minio-gw/")
+	// (yaiba) monkey hack, iam sys need local file operation, make it to legacy configdir
+	localFS, _ := NewFSObjectLayer(globalConfigDir.Get())
 	// Create new IAM system.
 	globalIAMSys = NewIAMSys()
 	if err = globalIAMSys.Init(localFS); err != nil {
