@@ -22,10 +22,11 @@ import { connect } from "react-redux"
 import { ProgressBar } from "react-bootstrap"
 import AbortConfirmModal from "./AbortConfirmModal"
 import * as uploadsActions from "./actions"
-
+import { withI18n } from "react-i18next";
 export class UploadModal extends React.Component {
   render() {
     const { uploads, showAbort, showAbortModal } = this.props
+    const { t, i18n } = this.props;
     if (showAbort) {
       return <AbortConfirmModal />
     }
@@ -50,10 +51,10 @@ export class UploadModal extends React.Component {
     // If more than one: "Uploading files (5)..."
     // If only one: "Uploading myfile.txt..."
     let text =
-      "Uploading " +
+      `${t('uploading')}` +
       (numberUploading == 1
         ? `'${uploads[Object.keys(uploads)[0]].name}'`
-        : `files (${numberUploading})`) +
+        : `${t('objects')} (${numberUploading})`) +
       "..."
 
     return (
@@ -88,4 +89,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UploadModal)
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(UploadModal))
