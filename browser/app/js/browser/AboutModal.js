@@ -17,6 +17,7 @@
 import React from "react"
 import { Modal } from "react-bootstrap"
 import logo from "../../img/logo.svg"
+import { Trans } from 'react-i18next';
 
 export const AboutModal = ({ serverInfo, hideAbout }) => {
   const { version, memory, platform, runtime } = serverInfo
@@ -39,19 +40,19 @@ export const AboutModal = ({ serverInfo, hideAbout }) => {
         <div className="mai-item">
           <ul className="maii-list">
             <li>
-              <div>Version</div>
+              <div><Trans>about.version</Trans></div>
               <small>{version}</small>
             </li>
             <li>
-              <div>Memory</div>
+              <div><Trans>about.version</Trans>Memory</div>
               <small>{memory}</small>
             </li>
             <li>
-              <div>Platform</div>
+              <div><Trans>about.version</Trans>Platform</div>
               <small>{platform}</small>
             </li>
             <li>
-              <div>Runtime</div>
+              <div><Trans>about.version</Trans>Runtime</div>
               <small>{runtime}</small>
             </li>
           </ul>

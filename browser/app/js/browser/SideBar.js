@@ -40,9 +40,9 @@ export const SideBar = ({ sidebarOpen, clickOutside }) => {
           <img src={logo} alt="" />
           <h2>S3</h2>
         </div>
-        <div>Lambda Simple Storage Service </div>
+        {/* <div>Lambda Simple Storage Service </div> */}
         <div className="fes-list">
-          {web.LoggedIn() }
+          {web.LoggedIn() && <BucketSearch />}
           <BucketList />
         </div>
         <Host />

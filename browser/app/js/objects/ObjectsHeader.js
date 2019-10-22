@@ -18,6 +18,7 @@ import React from "react"
 import classNames from "classnames"
 import { connect } from "react-redux"
 import * as actionsObjects from "./actions"
+import { Trans } from 'react-i18next';
 import {
   SORT_BY_NAME,
   SORT_BY_SIZE,
@@ -42,7 +43,7 @@ export const ObjectsHeader = ({
         onClick={() => sortObjects(SORT_BY_NAME)}
         data-sort="name"
       >
-        Name
+        <Trans>name</Trans>  
         <i
           className={classNames({
             "fesli-sort": true,
@@ -59,7 +60,7 @@ export const ObjectsHeader = ({
         onClick={() => sortObjects(SORT_BY_SIZE)}
         data-sort="size"
       >
-        Size
+         <Trans>size</Trans> 
         <i
           className={classNames({
             "fesli-sort": true,
@@ -77,7 +78,7 @@ export const ObjectsHeader = ({
         onClick={() => sortObjects(SORT_BY_LAST_MODIFIED)}
         data-sort="last-modified"
       >
-        Last Modified
+         <Trans>modified</Trans> 
         <i
           className={classNames({
             "fesli-sort": true,

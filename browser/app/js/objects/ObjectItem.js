@@ -33,7 +33,6 @@ export const ObjectItem = ({
   actionButtons,
   onClick
 }) => {
-  
   return (
     <div className={"fesl-row"} data-type={getDataType(name, contentType)}>
       <div className="fesl-item fesl-item-icon">
@@ -65,7 +64,7 @@ export const ObjectItem = ({
       </div>
       <div className="fesl-item fesl-item-size">{size}</div>
       <div className="fesl-item fesl-item-modified">{lastModified}</div>
-      {/* <div className="fesl-item fesl-item-actions">{actionButtons}</div> */}
+      <div className="fesl-item fesl-item-actions">{actionButtons}</div>
     </div>
   )
 }

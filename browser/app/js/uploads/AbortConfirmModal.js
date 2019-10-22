@@ -19,7 +19,7 @@ import classNames from "classnames"
 import { connect } from "react-redux"
 import ConfirmModal from "../browser/ConfirmModal"
 import * as uploadsActions from "./actions"
-
+import { withI18n } from "react-i18next";
 export class AbortConfirmModal extends React.Component {
   abortUploads() {
     const { abort, uploads } = this.props
@@ -29,6 +29,7 @@ export class AbortConfirmModal extends React.Component {
   }
   render() {
     const { hideAbort } = this.props
+    const { t, i18n } = this.props;
     let baseClass = classNames({
       "abort-upload": true
     })
@@ -45,12 +46,11 @@ export class AbortConfirmModal extends React.Component {
       <ConfirmModal
         show={true}
         baseClass={baseClass}
-        text="Abort uploads in progress?"
+        text={t('aboartText')}
         icon="fa fa-info-circle mci-amber"
-        sub="This cannot be undone!"
-        okText="Abort"
+        okText={t('abort')}
         okIcon={okIcon}
-        cancelText="Upload"
+        cancelText={t('upload1')}
         cancelIcon={cancelIcon}
         okHandler={this.abortUploads.bind(this)}
         cancelHandler={hideAbort}
@@ -72,4 +72,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AbortConfirmModal)
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(AbortConfirmModal))
