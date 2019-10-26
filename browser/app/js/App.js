@@ -26,7 +26,11 @@ import i18n from './i18n'
 export const App = () => {
   return (
     <Switch>
+      {/* <Route path={"/"} component={Login}> */}
+      {/* </Route> */}
       <Route path={"/login"} component={Login} />
+      {/* <Route path={"/minio/login"} component={Login}/> */}
+      {/* <Redirect from="/" to="/minio/login"> </Redirect> */}
       <Route path={"/:bucket?/*"} component={Browser} />
     </Switch>
   )
