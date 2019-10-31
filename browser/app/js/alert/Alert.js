@@ -23,7 +23,9 @@ const Alert = ({ show, type, message, onDismiss }) => (
     bsStyle={type}
     onDismiss={onDismiss}
   >
-    <div className="text-center">{message}</div>
+    <div className="text-center">
+      <span className="alertmessage">{message}</span>
+    </div>
   </AlertComponent>
 )
 

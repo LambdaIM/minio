@@ -97,7 +97,7 @@ export class BrowserDropdown extends React.Component {
           </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu-right">
             <li>
-              <a target="_blank" href="https://github.com/minio/minio">
+              <a target="_blank" href="https://github.com/LambdaIM">
                 GitHub <i className="fa fa-github" />
               </a>
             </li>
@@ -107,7 +107,7 @@ export class BrowserDropdown extends React.Component {
               </a>
             </li>
             <li>
-              <a target="_blank" href="https://docs.min.io/">
+              <a target="_blank" href="https://github.com/LambdaIM/launch">
               <Trans>doc</Trans>  <i className="fa fa-book" />
               </a>
             </li>
