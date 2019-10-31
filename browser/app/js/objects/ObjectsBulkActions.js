@@ -67,12 +67,12 @@ export class ObjectsBulkActions extends React.Component {
         <span className="la-actions pull-right">
           <button id="download-checked" onClick={this.handleDownload.bind(this)}>
             {" "}
-            {t('download')}
+            {t('download')}&nbsp;&nbsp;
             {(checkedObjects.length === 1 && !checkedObjects[0].endsWith('/')) ? 
             `${t('object')}`: `${t('zip')}`}{" "}
           </button>
         </span>
-        <span className="la-actions pull-right">
+        {/* <span className="la-actions pull-right">
           <button
             id="delete-checked"
             onClick={() => this.setState({ showDeleteConfirmation: true })}
@@ -81,7 +81,7 @@ export class ObjectsBulkActions extends React.Component {
             {t('delete')}
             {" "}
           </button>
-        </span>
+        </span> */}
         <i
           className="la-close fa fa-times"
           id="close-bulk-actions"

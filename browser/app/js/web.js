@@ -123,10 +123,10 @@ class Web {
   }
 }
 
-// const web = new Web(`${window.location.protocol}//${window.location.host}${minioBrowserPrefix}/webrpc`);
+const web = new Web(`${window.location.protocol}//${window.location.host}${minioBrowserPrefix}/webrpc`);
 
 // 代理路由
 
-const web = new Web(`${window.location.protocol}//${window.location.host}/minio/webrpc`);
+// const web = new Web(`${window.location.protocol}//${window.location.host}/minio/webrpc`);
 // console.log(`${window.location.protocol}//${window.location.host}${minioBrowserPrefix}/webrpc`);
 export default web;
