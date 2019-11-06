@@ -45,7 +45,7 @@ export class BrowserDropdown extends React.Component {
     })
   }
   changeLang(event) {
-    this.setState({value: event.target.value});
+    this.setState({ value: event.target.value });
     localStorage.setItem('language', event.target.value);
     window.location.reload();
   }
@@ -97,18 +97,23 @@ export class BrowserDropdown extends React.Component {
           </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu-right">
             <li>
+              <a target="_blank" href="https://www.lambdastorage.com/">
+                <Trans>website</Trans><i className="fa fa-globe" />
+              </a>
+            </li>
+            <li>
               <a target="_blank" href="https://github.com/LambdaIM">
                 GitHub <i className="fa fa-github" />
               </a>
             </li>
             <li>
               <a href="" onClick={this.fullScreen}>
-              <Trans>fullScreen</Trans>  <i className="fa fa-expand" />
+                <Trans>fullScreen</Trans>  <i className="fa fa-expand" />
               </a>
             </li>
             <li>
               <a target="_blank" href="https://github.com/LambdaIM/launch">
-              <Trans>doc</Trans>  <i className="fa fa-book" />
+                <Trans>doc</Trans>  <i className="fa fa-book" />
               </a>
             </li>
             {/* <li>
@@ -155,7 +160,7 @@ export class BrowserDropdown extends React.Component {
 
             <li>
               <a href="" id="logout" onClick={this.logout}>
-              <Trans>signout</Trans>  <i className="fa fa-sign-out" />
+                <Trans>signout</Trans>  <i className="fa fa-sign-out" />
               </a>
             </li>
           </Dropdown.Menu>

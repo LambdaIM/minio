@@ -148,7 +148,8 @@ export class Login extends React.Component {
             <button className="lw-btn" type="submit">
               <i className="fas fa-sign-in-alt" />
             </button>
-
+            <p className="white">{t('accessKey')}: lambda</p>
+            <p className="white">{t('secretKey')}: 12345678</p>
           </form>
           <br />
          { t('language') }&nbsp;&nbsp;&nbsp;
@@ -158,7 +159,7 @@ export class Login extends React.Component {
           </select>
         </div>
         <div className="l-footer">
-          <a className="lf-logo" href="">
+          <a className="lf-logo" href="https://www.lambdastorage.com/" target="_blank">
             < img src={logo} alt="" />
           </ a>
           <div className="lf-server">{window.location.host}</div>
