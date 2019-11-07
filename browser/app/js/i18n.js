@@ -42,7 +42,8 @@ const resources = {
       "n1": "Please choose a bucket before trying to upload files.",
       "n2": "uploaded successfully",
       "n3": "Unauthorized request.",
-      "n4": "Error occurred uploading "
+      "n4": "Error occurred uploading ",
+      "mutiFile": "Downloading multiple files is not supported"
     }
   },
   zh_cn: {
@@ -83,7 +84,8 @@ const resources = {
       "n1": "在上传文件前请选择一个空间",
       "n2": "上传成功",
       "n3": "非法请求",
-      "n4": "文件上传出错,出错文件:"
+      "n4": "文件上传出错,出错文件:",
+      "mutiFile": "不支持同时下载多个文件"
     }
 
   }
