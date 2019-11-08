@@ -72,6 +72,42 @@ type BucketInfo struct {
 	Created time.Time
 }
 
+/*
+	OrderId              string   `protobuf:"bytes,1,opt,name=order_id,json=orderId,proto3" json:"order_id,omitempty"`
+	OwnerAddr            string   `protobuf:"bytes,2,opt,name=owner_addr,json=ownerAddr,proto3" json:"owner_addr,omitempty"`
+	ProviderAddr         string   `protobuf:"bytes,3,opt,name=provider_addr,json=providerAddr,proto3" json:"provider_addr,omitempty"`
+	ProviderDhtId        string   `protobuf:"bytes,4,opt,name=provider_dht_id,json=providerDhtId,proto3" json:"provider_dht_id,omitempty"`
+	SellerAddress        string   `protobuf:"bytes,5,opt,name=seller_address,json=sellerAddress,proto3" json:"seller_address,omitempty"`
+	MachineName          string   `protobuf:"bytes,6,opt,name=machine_name,json=machineName,proto3" json:"machine_name,omitempty"`
+	AccessKey            string   `protobuf:"bytes,7,opt,name=access_key,json=accessKey,proto3" json:"access_key,omitempty"`
+	SecretKey            string   `protobuf:"bytes,8,opt,name=secret_key,json=secretKey,proto3" json:"secret_key,omitempty"`
+	Expiration           int64    `protobuf:"varint,9,opt,name=expiration,proto3" json:"expiration,omitempty"`
+	Capacity             uint64   `protobuf:"varint,10,opt,name=capacity,proto3" json:"capacity,omitempty"`
+	CreateTime           int64    `protobuf:"varint,11,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
+	Used                 uint64   `protobuf:"varint,12,opt,name=used,proto3" json:"used,omitempty"`
+ */
+
+// BucketInfo - represents bucket metadata.
+type LambBucketInfo struct {
+	// Name of the bucket.
+	Name string
+
+	StorageName string
+
+	SellerAddress string
+
+	Capacity uint64
+
+	Used uint64
+
+	CreateTime int64
+
+	Expiration int64
+
+	// Date and time when the bucket was created.
+	Created time.Time
+}
+
 // ObjectInfo - represents object metadata.
 type ObjectInfo struct {
 	// Name of the bucket.
