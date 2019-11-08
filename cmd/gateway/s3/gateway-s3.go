@@ -666,3 +666,7 @@ func (l *s3Objects) IsCompressionSupported() bool {
 func (l *s3Objects) IsEncryptionSupported() bool {
 	return minio.GlobalKMS != nil || len(minio.GlobalGatewaySSE) > 0
 }
+
+func (l *s3Objects) ListLambBuckets(ctx context.Context) (buckets []minio.LambBucketInfo, err error) {
+	return []minio.LambBucketInfo{}, nil
+}

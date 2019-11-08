@@ -151,3 +151,8 @@ func getStorageInfo(disks []StorageAPI) StorageInfo {
 func (xl xlObjects) StorageInfo(ctx context.Context) StorageInfo {
 	return getStorageInfo(xl.getDisks())
 }
+
+
+func (xl xlObjects) ListLambBuckets(ctx context.Context) (buckets []LambBucketInfo, err error) {
+	return []LambBucketInfo{}, nil
+}

@@ -1223,3 +1223,7 @@ func (fs *FSObjects) IsEncryptionSupported() bool {
 func (fs *FSObjects) IsCompressionSupported() bool {
 	return true
 }
+
+func (fs *FSObjects) ListLambBuckets(ctx context.Context) (buckets []LambBucketInfo, err error) {
+	return []LambBucketInfo{}, nil
+}
