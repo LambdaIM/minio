@@ -48,9 +48,11 @@ export class BucketList extends React.Component {
           renderTrackVertical={props => <div className="scrollbar-vertical" />}
         >
           <ul>
-            {visibleBuckets.map(bucket => (
-              <BucketContainer key={bucket} bucket={bucket} />
-            ))}
+            {visibleBuckets.map(bucket => {
+              // console.log(bucket);
+              return (<BucketContainer key={bucket} bucket={bucket} />)
+            }
+            )}
           </ul>
         </Scrollbars>
       </div>
