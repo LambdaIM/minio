@@ -26,16 +26,19 @@ export const Bucket = ({ bucket, isActive, selectBucket }) => {
       })}
       onClick={e => {
         e.preventDefault()
-        selectBucket(bucket)
+        selectBucket(bucket.name)
       }}
     >
+      {
+        bucket.name == 'oyc'? <i className="fa fa-check valid" aria-hidden="true"></i>:<i className="fa fa-close valid" aria-hidden="true"></i>
+      }
       <a
         href=""
         className={classNames({
           "fesli-loading": false
         })}
       >
-        {bucket}
+        {bucket.name}
       </a>
       
     </li>
