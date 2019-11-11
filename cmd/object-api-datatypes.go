@@ -104,6 +104,8 @@ type LambBucketInfo struct {
 
 	Expiration int64
 
+	Status int64
+
 	// Date and time when the bucket was created.
 	Created time.Time
 }
