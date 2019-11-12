@@ -142,7 +142,7 @@ export class BrowserDropdown extends React.Component {
               {/* <a href="" id="logout" onClick={this.changeLang}>
                 切换语言 <i className="fa fa-sign-out" />
               </a> */}
-              <a href="javascript:void(0)">
+              <a onClick={e => e.preventDefault()}>
               <Trans>language</Trans> &nbsp;
                 <select id="pid" onChange={this.changeLang.bind(this)} value={this.state.value}>
                   <option value="en">English</option>

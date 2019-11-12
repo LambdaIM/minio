@@ -23,6 +23,7 @@ import { ProgressBar } from "react-bootstrap"
 import AbortConfirmModal from "./AbortConfirmModal"
 import * as uploadsActions from "./actions"
 import { withI18n } from "react-i18next";
+
 export class UploadModal extends React.Component {
   render() {
     const { uploads, showAbort, showAbortModal } = this.props
@@ -56,7 +57,10 @@ export class UploadModal extends React.Component {
         ? `'${uploads[Object.keys(uploads)[0]].name}'`
         : `${t('objects')} (${numberUploading})`) +
       "..."
-
+    // if (percent == 100) {
+    //   // console.log('aaaa');
+    //   window.location.reload();
+    // }
     return (
       <div className="alert alert-info progress animated fadeInUp ">
         <button type="button" className="close" onClick={showAbortModal}>
