@@ -43,7 +43,13 @@ const resources = {
       "n2": "uploaded successfully",
       "n3": "Unauthorized request.",
       "n4": "Error occurred uploading ",
-      "mutiFile": "Downloading multiple files is not supported"
+      "mutiFile": "Downloading multiple files is not supported",
+      "info": 'Order Info',
+      "nodeName": 'Storage Node Name',
+      "orderID": "Order ID",
+      "sellerAddress": "Seller Address",
+      "createTime": "Create Time",
+      "exTime": "Expire Time"
     }
   },
   zh_cn: {
@@ -85,7 +91,13 @@ const resources = {
       "n2": "上传成功",
       "n3": "非法请求",
       "n4": "文件上传出错,出错文件:",
-      "mutiFile": "不支持同时下载多个文件"
+      "mutiFile": "不支持同时下载多个文件",
+      "info": '订单信息',
+      "nodeName": '节点名称',
+      "orderID": "订单ID",
+      "sellerAddress": "卖方地址",
+      "createTime": "创建时间",
+      "exTime": "过期时间"
     }
 
   }
