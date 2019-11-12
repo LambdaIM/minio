@@ -385,7 +385,7 @@ type WebLambBucketInfo struct {
 	Capacity uint64  `json:"capacity"`
 	Used uint64 `json:"used"`
 	// Date the bucket was created.
-	CreationDate time.Time `json:"creationDate"`
+	CreationDate int64 `json:"creationDate"`
 	ExpirationDate int64 `json:"expirationData"`
 	Status int64 `json:"status"`
 }
@@ -430,7 +430,7 @@ func (web *webAPIHandlers) ListLambBuckets(r *http.Request, args *WebGenericArgs
 				SellerAddress: bucket.SellerAddress,
 				Capacity: bucket.Capacity,
 				Used: bucket.Used,
-				CreationDate: bucket.Created,
+				CreationDate: bucket.CreateTime,
 				ExpirationDate: bucket.Expiration,
 				Status:bucket.Status,
 			})
