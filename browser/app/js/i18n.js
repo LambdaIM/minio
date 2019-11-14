@@ -35,10 +35,10 @@ const resources = {
       "download": "Download",
       "zip": " all as zip",
       "deleteText": "Are you sure you want to delete?",
-      "uploading": "Uploading",
-      "aboartText": "Abort uploads in progress?",
+      "uploading": "Analysing",
+      "aboartText": "Abort analysis in progress?",
       "abort": "Abort",
-      "upload1": "Upload",
+      "upload1": "Analysis",
       "n1": "Please choose a bucket before trying to upload files.",
       "n2": "uploaded successfully",
       "n3": "Unauthorized request.",
@@ -49,7 +49,8 @@ const resources = {
       "orderID": "Order ID",
       "sellerAddress": "Seller Address",
       "createTime": "Create Time",
-      "exTime": "Expire Time"
+      "exTime": "Expire Time",
+      "upSuccess": "File parsing is successful, please wait for the upload to complete"
     }
   },
   zh_cn: {
@@ -83,10 +84,10 @@ const resources = {
       "download": "下载",
       "zip": "所有",
       "deleteText": "你确定要删除这个文件吗?",
-      "uploading": "上传中",
-      "aboartText": "确定要中止上传文件吗?",
-      "abort": "中止上传文件",
-      "upload1": "继续上传",
+      "uploading": "解析",
+      "aboartText": "确定要中止解析文件吗?",
+      "abort": "中止解析文件",
+      "upload1": "继续解析",
       "n1": "在上传文件前请选择一个空间",
       "n2": "上传成功",
       "n3": "非法请求",
@@ -97,7 +98,8 @@ const resources = {
       "orderID": "订单ID",
       "sellerAddress": "卖方地址",
       "createTime": "创建时间",
-      "exTime": "过期时间"
+      "exTime": "过期时间",
+      "upSuccess": "文件解析成功,请等待上传完成"
     }
 
   }

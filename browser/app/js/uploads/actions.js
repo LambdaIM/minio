@@ -117,6 +117,8 @@ export const uploadFile = file => {
 
     xhr.onload = function(event) {
       if (xhr.status == 401 || xhr.status == 403) {
+        document.querySelector(".page-load").classList.remove("pl-5")
+        document.querySelector(".page-load").classList.add("pl-0","pl-1")
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(
@@ -127,6 +129,8 @@ export const uploadFile = file => {
         )
       }
       if (xhr.status == 500 || xhr.status == 504) {
+        document.querySelector(".page-load").classList.remove("pl-5")
+        document.querySelector(".page-load").classList.add("pl-0","pl-1")
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(
@@ -137,6 +141,8 @@ export const uploadFile = file => {
         )
       }
       if (xhr.status == 200) {
+        document.querySelector(".page-load").classList.remove("pl-5")
+        document.querySelector(".page-load").classList.add("pl-0","pl-1")
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(

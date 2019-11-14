@@ -61,13 +61,18 @@ export class UploadModal extends React.Component {
     //   // console.log('aaaa');
     //   window.location.reload();
     // }
+    document.querySelector(".page-load").classList.remove("pl-0","pl-1")
+    document.querySelector(".page-load").classList.add("pl-5")
     return (
       <div className="alert alert-info progress animated fadeInUp ">
         <button type="button" className="close" onClick={showAbortModal}>
           <span>×</span>
         </button>
         <div className="text-center">
-          <small>{text}</small>
+          <i>{text}</i>
+          {
+            percent < 100 ? '' : <i>{t('upSuccess')}</i>
+          }
         </div>
         <ProgressBar now={percent} />
         <div className="text-center">
