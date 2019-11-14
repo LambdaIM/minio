@@ -22,7 +22,7 @@ import { getCurrentBucket } from "../buckets/selectors"
 import { getCurrentPrefix } from "../objects/selectors"
 import { minioBrowserPrefix } from "../constants"
 import i18next from 'i18next';
-
+import * as bucketActions from "../buckets/actions"
 export const ADD = "uploads/ADD"
 export const UPDATE_PROGRESS = "uploads/UPDATE_PROGRESS"
 export const STOP = "uploads/STOP"
@@ -126,7 +126,7 @@ export const uploadFile = file => {
           })
         )
       }
-      if (xhr.status == 500) {
+      if (xhr.status == 500 || xhr.status == 504) {
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(
@@ -145,6 +145,7 @@ export const uploadFile = file => {
             message: `${i18next.t('object')} ${file.name} ${i18next.t('n2')}`
           })
         )
+        dispatch(bucketActions.fetchBuckets())
         dispatch(objectsActions.selectPrefix(currentPrefix))
       }
     }

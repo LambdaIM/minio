@@ -163,6 +163,7 @@ export const selectPrefix = prefix => {
   return function(dispatch, getState) {
     dispatch(setCurrentPrefix(prefix))
     dispatch(fetchObjects())
+    // dispatch(bucketActions.fetchBuckets())
     dispatch(resetCheckedList())
     const currentBucket = getCurrentBucket(getState())
     history.replace(`/${currentBucket}/${prefix}`)

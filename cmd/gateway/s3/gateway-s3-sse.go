@@ -780,3 +780,7 @@ func (l *s3EncObjects) DeleteBucket(ctx context.Context, bucket string) error {
 	}
 	return nil
 }
+
+func (l *s3EncObjects) ListLambBuckets(ctx context.Context) (buckets []minio.LambBucketInfo, err error) {
+	return []minio.LambBucketInfo{}, nil
+}

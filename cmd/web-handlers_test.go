@@ -430,7 +430,7 @@ func testListBucketsWebHandler(obj ObjectLayer, instanceType string, t TestErrHa
 
 	listBucketsRequest := WebGenericArgs{}
 	listBucketsReply := &ListBucketsRep{}
-	req, err := newTestWebRPCRequest("Web.ListBuckets", authorization, listBucketsRequest)
+	req, err := newTestWebRPCRequest("Web.ListLambBuckets", authorization, listBucketsRequest)
 	if err != nil {
 		t.Fatalf("Failed to create HTTP request: <ERROR> %v", err)
 	}

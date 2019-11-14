@@ -371,6 +371,77 @@ func (web *webAPIHandlers) ListBuckets(r *http.Request, args *WebGenericArgs, re
 	return nil
 }
 
+
+type ListLambBucketsRep struct {
+	Buckets   []WebLambBucketInfo `json:"buckets"`
+	UIVersion string `json:"uiVersion"`
+}
+// WebBucketInfo container for list buckets metadata.
+type WebLambBucketInfo struct {
+	// The name of the bucket.
+	Name string `json:"name"`
+	StorageName string `json:"storageName"`
+	SellerAddress string `json:"sellerAddress"`
+	Capacity uint64  `json:"capacity"`
+	Used uint64 `json:"used"`
+	// Date the bucket was created.
+	CreationDate int64 `json:"creationDate"`
+	ExpirationDate int64 `json:"expirationData"`
+	Status int64 `json:"status"`
+}
+
+func (web *webAPIHandlers) ListLambBuckets(r *http.Request, args *WebGenericArgs, reply *ListLambBucketsRep) error {
+	ctx := newWebContext(r, args, "webListLambBuckets")
+	objectAPI := web.ObjectAPI()
+	if objectAPI == nil {
+		return toJSONError(ctx, errServerNotInitialized)
+	}
+	listBuckets := objectAPI.ListLambBuckets
+
+	claims, owner, authErr := webRequestAuthenticate(r)
+	if authErr != nil {
+		return toJSONError(ctx, authErr)
+	}
+
+	// Set prefix value for "s3:prefix" policy conditionals.
+	r.Header.Set("prefix", "")
+
+	// Set delimiter value for "s3:delimiter" policy conditionals.
+	r.Header.Set("delimiter", slashSeparator)
+
+	// If etcd, dns federation configured list buckets from etcd.
+
+	buckets, err := listBuckets(ctx)
+	if err != nil {
+		return toJSONError(ctx, err)
+	}
+	for _, bucket := range buckets {
+		if globalIAMSys.IsAllowed(iampolicy.Args{
+			AccountName:     claims.Subject,
+			Action:          iampolicy.ListBucketAction,
+			BucketName:      bucket.Name,
+			ConditionValues: getConditionValues(r, "", claims.Subject),
+			IsOwner:         owner,
+			ObjectName:      "",
+		}) {
+			reply.Buckets = append(reply.Buckets, WebLambBucketInfo{
+				Name: bucket.Name,
+				StorageName: bucket.StorageName,
+				SellerAddress: bucket.SellerAddress,
+				Capacity: bucket.Capacity,
+				Used: bucket.Used,
+				CreationDate: bucket.CreateTime,
+				ExpirationDate: bucket.Expiration,
+				Status:bucket.Status,
+			})
+		}
+	}
+
+
+	reply.UIVersion = browser.UIVersion
+	return nil
+}
+
 // ListObjectsArgs - list object args.
 type ListObjectsArgs struct {
 	BucketName string `json:"bucketName"`
