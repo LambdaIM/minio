@@ -66,6 +66,8 @@ export const addUpload = (xhr, slug, size, name) => {
 }
 
 export const abortUpload = slug => {
+  document.querySelector(".page-load").classList.remove("pl-5")
+  document.querySelector(".page-load").classList.add("pl-0","pl-1")
   return function(dispatch) {
     const xhr = requests[slug]
     if (xhr) {
@@ -157,6 +159,8 @@ export const uploadFile = file => {
     }
 
     xhr.upload.addEventListener("error", event => {
+      document.querySelector(".page-load").classList.remove("pl-5")
+      document.querySelector(".page-load").classList.add("pl-0","pl-1")
       dispatch(stop(slug))
       dispatch(
         alertActions.set({
