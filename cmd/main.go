@@ -115,6 +115,7 @@ func newApp(name string) *cli.App {
 
 	// Register all commands.
 	registerCommand(serverCmd)
+	registerCommand(lambdaServerCmd)
 	registerCommand(gatewayCmd)
 	registerCommand(iamGatewayCmd)
 	registerCommand(updateCmd)
