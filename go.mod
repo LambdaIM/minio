@@ -75,5 +75,5 @@ require (
 
 replace (
 	github.com/minio/minio => ./
-	github.com/minio/minio-go/v6 => ../minio-go
+	github.com/minio/minio-go/v6 => github.com/LambdaIM/minio-go/v6 v6.0.30-0.20191123102712-5540f67f2e8e
 )
