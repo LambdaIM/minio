@@ -189,6 +189,8 @@ type CommonPrefix struct {
 type Bucket struct {
 	Name         string
 	CreationDate string // time string of format "2006-01-02T15:04:05.000Z"
+	//Lambda field
+	Endpoint string
 }
 
 // Object container for object metadata
@@ -319,6 +321,7 @@ func generateListBucketsResponse(buckets []BucketInfo) ListBucketsResponse {
 		var listbucket = Bucket{}
 		listbucket.Name = bucket.Name
 		listbucket.CreationDate = bucket.Created.UTC().Format(timeFormatAMZLong)
+		listbucket.Endpoint = bucket.Endpoint
 		listbuckets = append(listbuckets, listbucket)
 	}
 

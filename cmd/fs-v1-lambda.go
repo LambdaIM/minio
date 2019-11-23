@@ -32,6 +32,7 @@ import (
 
 const (
 	MininumRequireCapacity = 1073741824 * 2 //5G
+	UserDefinedEndpoint    = "endpoint"
 )
 
 // LambdaFSObjects - Implements fs object layer.
@@ -156,19 +157,31 @@ func (lfs *LambdaFSObjects) GetBucketInfo(ctx context.Context, bucket string) (b
 	if !ok {
 		return bucketInfo, BucketNotFound{Bucket: bucket}
 	} else {
-		return lfs.MountPoints[fsPath].GetBucketInfo(ctx, bucket)
+		bucketInfo, err = lfs.MountPoints[fsPath].GetBucketInfo(ctx, bucket)
+		if err == nil {
+			bucketInfo.Endpoint = fsPath
+		}
+		return bucketInfo, err
 	}
 }
 
 func (lfs *LambdaFSObjects) ListBuckets(ctx context.Context) (buckets []BucketInfo, err error) {
-
+	var bks []BucketInfo
 	for _, fsLayer := range lfs.MountPoints {
 		bs, err := fsLayer.ListBuckets(ctx)
 		if err != nil {
 			return nil, err
 		} else {
-			buckets = append(buckets, bs[:]...)
+			bks = append(bks, bs[:]...)
 		}
+	}
+
+	for _, bucket := range bks {
+		fsPath, ok := lfs.BucketMountPointsMap[bucket.Name]
+		if ok {
+			bucket.Endpoint = fsPath
+		}
+		buckets = append(buckets, bucket)
 	}
 
 	return buckets, err
@@ -235,7 +248,10 @@ func (lfs *LambdaFSObjects) GetObjectInfo(ctx context.Context, bucket, object st
 	if !ok {
 		return objInfo, BucketNotFound{Bucket: bucket}
 	} else {
-		objInfo, err := lfs.MountPoints[fsPath].GetObjectInfo(ctx, bucket, object, opts)
+		objInfo, err = lfs.MountPoints[fsPath].GetObjectInfo(ctx, bucket, object, opts)
+		if err == nil {
+			objInfo.UserDefined[UserDefinedEndpoint] = fsPath
+		}
 		return objInfo, err
 	}
 }
@@ -248,7 +264,7 @@ func (lfs *LambdaFSObjects) PutObject(ctx context.Context, bucket, object string
 
 	objInfo, err = lfs.MountPoints[fsPath].PutObject(ctx, bucket, object, data, opts)
 	if err == nil {
-		objInfo.UserDefined["endpoint"] = fsPath
+		objInfo.UserDefined[UserDefinedEndpoint] = fsPath
 	}
 	return objInfo, err
 }

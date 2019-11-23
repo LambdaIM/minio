@@ -28,6 +28,9 @@ type VolInfo struct {
 
 	// Date and time when the volume was created.
 	Created time.Time
+
+	// Lambda Field
+	Endpoint string
 }
 
 // FilesInfo represent a list of files, additionally

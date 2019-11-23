@@ -346,8 +346,9 @@ func (l *s3Objects) GetBucketInfo(ctx context.Context, bucket string) (bi minio.
 		}
 
 		return minio.BucketInfo{
-			Name:    bi.Name,
-			Created: bi.CreationDate,
+			Name:     bi.Name,
+			Created:  bi.CreationDate,
+			Endpoint: bi.Endpoint,
 		}, nil
 	}
 

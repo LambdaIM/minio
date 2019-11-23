@@ -70,6 +70,9 @@ type BucketInfo struct {
 
 	// Date and time when the bucket was created.
 	Created time.Time
+
+	// Lambda field
+	Endpoint string
 }
 
 /*
@@ -85,7 +88,12 @@ type BucketInfo struct {
 	Capacity             uint64   `protobuf:"varint,10,opt,name=capacity,proto3" json:"capacity,omitempty"`
 	CreateTime           int64    `protobuf:"varint,11,opt,name=create_time,json=createTime,proto3" json:"create_time,omitempty"`
 	Used                 uint64   `protobuf:"varint,12,opt,name=used,proto3" json:"used,omitempty"`
- */
+*/
+
+// EndpointInfo
+type LambEndpointInfo struct {
+	Path string
+}
 
 // BucketInfo - represents bucket metadata.
 type LambBucketInfo struct {
