@@ -31,7 +31,7 @@ import (
 )
 
 const (
-	MininumRequireCapacity = 1073741824 * 2 //5G
+	MininumRequireCapacity = 1073741824 * 5 //5G
 	UserDefinedEndpoint    = "endpoint"
 )
 
