@@ -266,13 +266,25 @@ func GetAllSets(args ...string) ([][]string, error) {
 // CreateServerEndpoints - validates and creates new endpoints from input args, supports
 // both ellipses and without ellipses transparently.
 func createServerEndpoints(serverAddr string, args ...string) (string, EndpointList, SetupType, int, int, error) {
+	var endpoints EndpointList
+	var setupType SetupType
+	if globalLambdaServer {
+		for i, arg := range args {
+			ep, err := NewEndpoint(arg)
+			if err != nil {
+				return serverAddr, nil, -1, 0, 0, err
+			}
+			ep.SetIndex = i
+			endpoints = append(endpoints, ep)
+		}
+		return serverAddr, endpoints, XLSetupType, len(args), 1, nil
+	}
+
 	setArgs, err := GetAllSets(args...)
 	if err != nil {
 		return serverAddr, nil, -1, 0, 0, err
 	}
 
-	var endpoints EndpointList
-	var setupType SetupType
 	serverAddr, endpoints, setupType, err = CreateEndpoints(serverAddr, setArgs...)
 	if err != nil {
 		return serverAddr, nil, -1, 0, 0, err

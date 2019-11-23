@@ -275,7 +275,10 @@ var (
 	globalSweepHealState    *allHealState
 
 	// Add new variable global values here.
+	// Lambda global variable
 	globalIgnorePolicyCheck = false
+	globalLambdaGateway     = false
+	globalLambdaServer      = false
 )
 
 // global colors.

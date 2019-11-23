@@ -128,6 +128,7 @@ EXAMPLES:
 
 // serverMain handler called for 'minio server' command.
 func lambdaServerMain(ctx *cli.Context) {
+	globalLambdaServer = true
 	if ctx.Args().First() == "help" || !endpointsPresent(ctx) {
 		cli.ShowCommandHelpAndExit(ctx, "server", 1)
 	}
