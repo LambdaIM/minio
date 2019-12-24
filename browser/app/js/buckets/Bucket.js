@@ -94,15 +94,15 @@ export const Bucket = ({ bucket, isActive, selectBucket }) => {
   return (
     // <Popover id="popover-positioned-right" title="Popover right">
 
-    <OverlayTrigger
-      trigger={['hover']}
-      placement="right"
-      overlay={popoverHoverFocus}
-      rootClose={true}
-      animation={false}
-      delayHide={1000}
-      delayShow={500}
-    >
+    // <OverlayTrigger
+    //   trigger={['hover']}
+    //   placement="right"
+    //   overlay={popoverHoverFocus}
+    //   rootClose={true}
+    //   animation={false}
+    //   delayHide={1000}
+    //   delayShow={500}
+    // >
       <li
         className={classNames({
           active: isActive
@@ -125,7 +125,7 @@ export const Bucket = ({ bucket, isActive, selectBucket }) => {
         </a>
 
       </li>
-    </OverlayTrigger>
+    // </OverlayTrigger>
 
 
     // </Popover>

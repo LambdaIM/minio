@@ -82,7 +82,7 @@ class Web {
     return this.makeCall('StorageInfo')
   }
   ListBuckets() {
-    return this.makeCall('ListLambBuckets')
+    return this.makeCall('ListBuckets')
   }
   MakeBucket(args) {
     return this.makeCall('MakeBucket', args)
