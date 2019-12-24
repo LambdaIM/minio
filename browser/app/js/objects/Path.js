@@ -69,9 +69,15 @@ export class Path extends React.Component {
   }
   bucketExists(bucketName) {
     const { buckets } = this.props
-    return buckets.includes(bucketName)
+    var list=[];
+    buckets.forEach((item)=>{
+      list.push(item.name)
+
+    })
+    return list.includes(bucketName)
   }
   async onSubmit(e) {
+    console.info('---')
     e.preventDefault()
     const { makeBucket, selectBucket } = this.props
     // all paths need to end in slash to display contents properly

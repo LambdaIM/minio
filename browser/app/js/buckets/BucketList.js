@@ -26,6 +26,7 @@ import { pathSlice } from "../utils"
 
 export class BucketList extends React.Component {
   componentWillMount() {
+    console.log('- - -')
     const { fetchBuckets, setBucketList, selectBucket } = this.props
     if (web.LoggedIn()) {
       fetchBuckets()
@@ -47,9 +48,11 @@ export class BucketList extends React.Component {
           renderTrackVertical={props => <div className="scrollbar-vertical" />}
         >
           <ul>
-            {visibleBuckets.map(bucket => (
-              <BucketContainer key={bucket} bucket={bucket} />
-            ))}
+            {visibleBuckets.map(bucket => {
+              // console.log(bucket);
+              return (<BucketContainer key={bucket.name} bucket={bucket} />)
+            }
+            )}
           </ul>
         </Scrollbars>
       </div>

@@ -20,7 +20,7 @@ import classNames from "classnames"
 import * as actions from "./actions"
 import { getCheckedList } from "./selectors"
 import DeleteObjectConfirmModal from "./DeleteObjectConfirmModal"
-
+import { withI18n } from "react-i18next";
 export class ObjectsBulkActions extends React.Component {
   constructor(props) {
     super(props)
@@ -49,6 +49,7 @@ export class ObjectsBulkActions extends React.Component {
   }
   render() {
     const { checkedObjects, clearChecked } = this.props
+    const { t, i18n } = this.props;
     return (
       <div
         className={
@@ -59,27 +60,28 @@ export class ObjectsBulkActions extends React.Component {
         }
       >
         <span className="la-label">
-          <i className="fas fa-check-circle" /> {checkedObjects.length}
-          {checkedObjects.length === 1 ? " Object " : " Objects "}
-          selected
+          <i className="fa fa-check-circle" /> {checkedObjects.length}&nbsp;&nbsp;
+          {checkedObjects.length === 1 ? `${t('object')}` : `${t('objects')}`}&nbsp;&nbsp;
+          {t('select')}
         </span>
         <span className="la-actions pull-right">
           <button id="download-checked" onClick={this.handleDownload.bind(this)}>
             {" "}
-            Download
-            {(checkedObjects.length === 1 && !checkedObjects[0].endsWith('/')) ? 
-            " object" : " all as zip" }{" "}
+            {t('download')}&nbsp;&nbsp;
+            {(checkedObjects.length === 1 && !checkedObjects[0].endsWith('/')) ?
+            `${t('object')}`: `${t('zip')}`}{" "}
           </button>
         </span>
-        <span className="la-actions pull-right">
+        {/* <span className="la-actions pull-right">
           <button
             id="delete-checked"
             onClick={() => this.setState({ showDeleteConfirmation: true })}
           >
             {" "}
-            Delete selected{" "}
+            {t('delete')}
+            {" "}
           </button>
-        </span>
+        </span> */}
         <i
           className="la-close fas fa-times"
           id="close-bulk-actions"
@@ -113,4 +115,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ObjectsBulkActions)
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(ObjectsBulkActions))

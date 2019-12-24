@@ -22,13 +22,15 @@ import web from "../web"
 import history from "../history"
 import AboutModal from "./AboutModal"
 import ChangePasswordModal from "./ChangePasswordModal"
+import { Trans } from 'react-i18next';
 
 export class BrowserDropdown extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       showAboutModal: false,
-      showChangePasswordModal: false
+      showChangePasswordModal: false,
+      value: localStorage.getItem('language')
     }
   }
   showAbout(e) {
@@ -42,6 +44,12 @@ export class BrowserDropdown extends React.Component {
       showAboutModal: false
     })
   }
+  changeLang(event) {
+    this.setState({value: event.target.value});
+    localStorage.setItem('language', event.target.value);
+    window.location.reload();
+  }
+
   showChangePassword(e) {
     e.preventDefault()
     this.setState({
@@ -78,6 +86,7 @@ export class BrowserDropdown extends React.Component {
     web.Logout()
     history.replace("/login")
   }
+
   render() {
     const { serverInfo } = this.props
     return (
@@ -88,26 +97,26 @@ export class BrowserDropdown extends React.Component {
           </Dropdown.Toggle>
           <Dropdown.Menu className="dropdown-menu-right">
             <li>
-              <a target="_blank" href="https://github.com/minio/minio">
-                GitHub <i className="fab fa-github" />
+              <a target="_blank" href="https://github.com/LambdaIM">
+                GitHub <i className="fa fa-github" />
               </a>
             </li>
             <li>
               <a href="" onClick={this.fullScreen}>
-                Fullscreen <i className="fas fa-expand" />
+              <Trans>fullScreen</Trans>  <i className="fa fa-expand" />
               </a>
             </li>
             <li>
-              <a target="_blank" href="https://docs.min.io/">
-                Documentation <i className="fas fa-book" />
+              <a target="_blank" href="https://github.com/LambdaIM/launch">
+              <Trans>doc</Trans>  <i className="fa fa-book" />
               </a>
             </li>
-            <li>
+            {/* <li>
               <a target="_blank" href="https://slack.min.io">
                 Ask for help <i className="fas fa-question-circle" />
               </a>
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <a href="" id="show-about" onClick={this.showAbout.bind(this)}>
                 About <i className="fas fa-info-circle" />
               </a>
@@ -117,8 +126,8 @@ export class BrowserDropdown extends React.Component {
                   hideAbout={this.hideAbout.bind(this)}
                 />
               )}
-            </li>
-            <li>
+            </li> */}
+            {/* <li>
               <a href="" onClick={this.showChangePassword.bind(this)}>
                 Change Password <i className="fas fa-cog" />
               </a>
@@ -128,10 +137,25 @@ export class BrowserDropdown extends React.Component {
                   hideChangePassword={this.hideChangePassword.bind(this)}
                 />
               )}
+            </li> */}
+            <li>
+              {/* <a href="" id="logout" onClick={this.changeLang}>
+                切换语言 <i className="fa fa-sign-out" />
+              </a> */}
+              <a onClick={e => e.preventDefault()}>
+              <Trans>language</Trans> &nbsp;
+                <select id="pid" onChange={this.changeLang.bind(this)} value={this.state.value}>
+                  <option value="en">English</option>
+                  <option value="zh_cn">中文</option>
+                </select>
+
+              </a>
+
             </li>
+
             <li>
               <a href="" id="logout" onClick={this.logout}>
-                Sign Out <i className="fas fa-sign-out-alt" />
+              <Trans>signout</Trans>  <i className="fa fa-sign-out" />
               </a>
             </li>
           </Dropdown.Menu>

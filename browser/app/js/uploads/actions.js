@@ -21,7 +21,8 @@ import * as objectsActions from "../objects/actions"
 import { getCurrentBucket } from "../buckets/selectors"
 import { getCurrentPrefix } from "../objects/selectors"
 import { minioBrowserPrefix } from "../constants"
-
+import i18next from 'i18next';
+import * as bucketActions from "../buckets/actions"
 export const ADD = "uploads/ADD"
 export const UPDATE_PROGRESS = "uploads/UPDATE_PROGRESS"
 export const STOP = "uploads/STOP"
@@ -65,6 +66,8 @@ export const addUpload = (xhr, slug, size, name) => {
 }
 
 export const abortUpload = slug => {
+  document.querySelector(".page-load").classList.remove("pl-5")
+  document.querySelector(".page-load").classList.add("pl-0","pl-1")
   return function(dispatch) {
     const xhr = requests[slug]
     if (xhr) {
@@ -83,7 +86,7 @@ export const uploadFile = file => {
       dispatch(
         alertActions.set({
           type: "danger",
-          message: "Please choose a bucket before trying to upload files."
+          message: `${i18next.t('n1')}`
         })
       )
       return
@@ -116,16 +119,20 @@ export const uploadFile = file => {
 
     xhr.onload = function(event) {
       if (xhr.status == 401 || xhr.status == 403) {
+        document.querySelector(".page-load").classList.remove("pl-5")
+        document.querySelector(".page-load").classList.add("pl-0","pl-1")
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(
           alertActions.set({
             type: "danger",
-            message: "Unauthorized request."
+            message: `${i18next.t('n3')}`
           })
         )
       }
-      if (xhr.status == 500) {
+      if (xhr.status == 500 || xhr.status == 504) {
+        document.querySelector(".page-load").classList.remove("pl-5")
+        document.querySelector(".page-load").classList.add("pl-0","pl-1")
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(
@@ -136,24 +143,29 @@ export const uploadFile = file => {
         )
       }
       if (xhr.status == 200) {
+        document.querySelector(".page-load").classList.remove("pl-5")
+        document.querySelector(".page-load").classList.add("pl-0","pl-1")
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(
           alertActions.set({
             type: "success",
-            message: "File '" + file.name + "' uploaded successfully."
+            message: `${i18next.t('object')} ${file.name} ${i18next.t('n2')}`
           })
         )
+        dispatch(bucketActions.fetchBuckets())
         dispatch(objectsActions.selectPrefix(currentPrefix))
       }
     }
 
     xhr.upload.addEventListener("error", event => {
+      document.querySelector(".page-load").classList.remove("pl-5")
+      document.querySelector(".page-load").classList.add("pl-0","pl-1")
       dispatch(stop(slug))
       dispatch(
         alertActions.set({
           type: "danger",
-          message: "Error occurred uploading '" + file.name + "'."
+          message: `${i18next.t('n4')} ${file.name} `
         })
       )
     })

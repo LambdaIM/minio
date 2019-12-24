@@ -23,13 +23,20 @@ import * as actionsAlert from "../alert/actions"
 import InputGroup from "./InputGroup"
 import web from "../web"
 import { Redirect } from "react-router-dom"
+import { withI18n } from "react-i18next";
+
+
+
+
+
 
 export class Login extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       accessKey: "",
-      secretKey: ""
+      secretKey: "",
+      value: localStorage.getItem('language')
     }
   }
 
@@ -86,9 +93,22 @@ export class Login extends React.Component {
   componentWillUnmount() {
     document.body.classList.remove("is-guest")
   }
+  // changelang() {
+  //   console.log('---------')
+  //   const { t, i18n } = this.props;
+  //   i18n.changeLanguage('zhch');
+  //   this.forceUpdate();
 
+  // }
+  changeLang(event) {
+    this.setState({value: event.target.value});
+    localStorage.setItem('language', event.target.value);
+    window.location.reload();
+  }
   render() {
     const { clearAlert, alert } = this.props
+    const { t, i18n } = this.props;
+
     if (web.LoggedIn()) {
       return <Redirect to={"/"} />
     }
@@ -100,11 +120,12 @@ export class Login extends React.Component {
         {alertBox}
         <div className="l-wrap">
           <form onSubmit={this.handleSubmit.bind(this)}>
+            {/* {t('WelcometoReact')} */}
             <InputGroup
               value={this.state.accessKey}
               onChange={this.accessKeyChange.bind(this)}
               className="ig-dark"
-              label="Access Key"
+              label={t('accessKey')}
               id="accessKey"
               name="username"
               type="text"
@@ -116,7 +137,7 @@ export class Login extends React.Component {
               value={this.state.secretKey}
               onChange={this.secretKeyChange.bind(this)}
               className="ig-dark"
-              label="Secret Key"
+              label={t('secretKey')}
               id="secretKey"
               name="password"
               type="password"
@@ -127,12 +148,19 @@ export class Login extends React.Component {
             <button className="lw-btn" type="submit">
               <i className="fas fa-sign-in-alt" />
             </button>
+
           </form>
+          <br />
+         { t('language') }&nbsp;&nbsp;&nbsp;
+          <select id="pid" onChange={this.changeLang.bind(this)} value={this.state.value}>
+            <option value="en">English</option>
+            <option value="zh_cn">中文</option>
+          </select>
         </div>
         <div className="l-footer">
           <a className="lf-logo" href="">
-            <img src={logo} alt="" />
-          </a>
+            < img src={logo} alt="" />
+          </ a>
           <div className="lf-server">{window.location.host}</div>
         </div>
       </div>
@@ -151,4 +179,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   state => state,
   mapDispatchToProps
-)(Login)
+)(withI18n()(Login))

@@ -18,6 +18,7 @@ import React from "react"
 import { connect } from "react-redux"
 import ReactDropzone from "react-dropzone"
 import * as actions from "./actions"
+import { withI18n } from "react-i18next";
 
 // Dropzone is a drag-and-drop element for uploading files. It will create a
 // landing zone of sorts that automatically receives the files.
@@ -35,8 +36,10 @@ export class Dropzone extends React.Component {
   render() {
     // Overwrite the default styling from react-dropzone; otherwise it
     // won't handle child elements correctly.
+    const { t} = this.props;
     const style = {
       height: "100%",
+      minHeight: "900px",
       borderWidth: "0",
       borderStyle: "dashed",
       borderColor: "#fff"
@@ -59,7 +62,9 @@ export class Dropzone extends React.Component {
         disableClick={true}
         onDrop={this.onDrop.bind(this)}
       >
+        
         {this.props.children}
+        <div className="dragtip">{t('upload')}</div>
       </ReactDropzone>
     )
   }
@@ -71,4 +76,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(undefined, mapDispatchToProps)(Dropzone)
+export default connect(undefined, mapDispatchToProps)(withI18n()(Dropzone))

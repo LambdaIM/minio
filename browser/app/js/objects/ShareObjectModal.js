@@ -26,6 +26,7 @@ import {
   SHARE_OBJECT_EXPIRY_HOURS,
   SHARE_OBJECT_EXPIRY_MINUTES
 } from "../constants"
+import { Trans } from 'react-i18next';
 
 export class ShareObjectModal extends React.Component {
   constructor(props) {
@@ -73,7 +74,7 @@ export class ShareObjectModal extends React.Component {
   }
   onUrlCopied() {
     const { showCopyAlert, hideShareObject } = this.props
-    showCopyAlert("Link copied to clipboard!")
+    showCopyAlert(<Trans>copied</Trans>)
     hideShareObject()
   }
   render() {
@@ -85,10 +86,10 @@ export class ShareObjectModal extends React.Component {
         onHide={hideShareObject}
         bsSize="small"
       >
-        <ModalHeader>Share Object</ModalHeader>
+        {/* <ModalHeader>Share Object</ModalHeader> */}
         <ModalBody>
           <div className="input-group copy-text">
-            <label>Shareable Link</label>
+            <label><Trans>share</Trans></label>
             <input
               type="text"
               ref={node => (this.copyTextInput = node)}
@@ -101,7 +102,7 @@ export class ShareObjectModal extends React.Component {
             className="input-group"
             style={{ display: web.LoggedIn() ? "block" : "none" }}
           >
-            <label>Expires in (Max 7 days)</label>
+            <label><Trans>expires</Trans></label>
             <div className="set-expire">
               <div className="set-expire-item">
                 <i
@@ -180,10 +181,10 @@ export class ShareObjectModal extends React.Component {
             text={window.location.protocol + "//" + shareObjectDetails.url}
             onCopy={this.onUrlCopied.bind(this)}
           >
-            <button className="btn btn-success">Copy Link</button>
+            <button className="btn btn-success"><Trans>copy</Trans></button>
           </CopyToClipboard>
           <button className="btn btn-link" onClick={hideShareObject}>
-            Cancel
+          <Trans>cancel</Trans>
           </button>
         </div>
       </Modal>

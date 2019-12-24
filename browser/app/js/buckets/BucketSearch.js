@@ -17,21 +17,24 @@
 import React from "react"
 import { connect } from "react-redux"
 import * as actionsBuckets from "./actions"
-
-export const BucketSearch = ({ onChange }) => (
-  <div
-    className="input-group ig-dark ig-left ig-search"
-    style={{ display: "block" }}
-  >
-    <input
-      className="ig-text"
-      type="text"
-      onChange={e => onChange(e.target.value)}
-      placeholder="Search Buckets..."
-    />
-    <i className="ig-helpers" />
-  </div>
-)
+import { withNamespaces } from 'react-i18next';
+export const BucketSearch = (props) => {
+  const { t, onChange } = props;
+  return (
+    <div
+      className="input-group ig-dark ig-left ig-search"
+      style={{ display: "block" }}
+    >
+      <input
+        className="ig-text"
+        type="text"
+        onChange={e => onChange(e.target.value)}
+        placeholder={t('search1')}
+      />
+      <i className="ig-helpers" />
+    </div>
+  )
+}
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -41,4 +44,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(undefined, mapDispatchToProps)(BucketSearch)
+export default connect(undefined, mapDispatchToProps)(withNamespaces('translation')(BucketSearch))

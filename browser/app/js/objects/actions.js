@@ -33,7 +33,7 @@ import {
   SORT_ORDER_ASC,
   SORT_ORDER_DESC
 } from "../constants"
-
+import i18next from 'i18next';
 export const SET_LIST = "objects/SET_LIST"
 export const RESET_LIST = "objects/RESET_LIST"
 export const APPEND_LIST = "objects/APPEND_LIST"
@@ -163,6 +163,7 @@ export const selectPrefix = prefix => {
   return function(dispatch, getState) {
     dispatch(setCurrentPrefix(prefix))
     dispatch(fetchObjects())
+    // dispatch(bucketActions.fetchBuckets())
     dispatch(resetCheckedList())
     const currentBucket = getCurrentBucket(getState())
     history.replace(`/${currentBucket}/${prefix}`)
@@ -336,33 +337,39 @@ export const resetCheckedList = () => ({
 
 export const downloadCheckedObjects = () => {
   return function(dispatch, getState) {
-    const state = getState()
-    const req = {
-      bucketName: getCurrentBucket(state),
-      prefix: getCurrentPrefix(state),
-      objects: getCheckedList(state)
-    }
-    if (!web.LoggedIn()) {
-      const requestUrl = location.origin + "/minio/zip?token="
-      downloadZip(requestUrl, req, dispatch)
-    } else {
-      return web
-        .CreateURLToken()
-        .then(res => {
-          const requestUrl = `${
-            location.origin
-          }${minioBrowserPrefix}/zip?token=${res.token}`
-          downloadZip(requestUrl, req, dispatch)
-        })
-        .catch(err =>
-          dispatch(
-            alertActions.set({
-              type: "danger",
-              message: err.message
-            })
-          )
-        )
-    }
+    dispatch(
+      alertActions.set({
+        type: "danger",
+        message: `${i18next.t('mutiFile')}`
+      })
+    )
+    // const state = getState()
+    // const req = {
+    //   bucketName: getCurrentBucket(state),
+    //   prefix: getCurrentPrefix(state),
+    //   objects: getCheckedList(state)
+    // }
+    // if (!web.LoggedIn()) {
+    //   const requestUrl = location.origin + "/minio/zip?token="
+    //   downloadZip(requestUrl, req, dispatch)
+    // } else {
+    //   return web
+    //     .CreateURLToken()
+    //     .then(res => {
+    //       const requestUrl = `${
+    //         location.origin
+    //       }${minioBrowserPrefix}/zip?token=${res.token}`
+    //       downloadZip(requestUrl, req, dispatch)
+    //     })
+    //     .catch(err =>
+    //       dispatch(
+    //         alertActions.set({
+    //           type: "danger",
+    //           message: err.message
+    //         })
+    //       )
+    //     )
+    // }
   }
 }
 

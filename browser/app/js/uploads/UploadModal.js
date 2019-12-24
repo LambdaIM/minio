@@ -22,10 +22,12 @@ import { connect } from "react-redux"
 import { ProgressBar } from "react-bootstrap"
 import AbortConfirmModal from "./AbortConfirmModal"
 import * as uploadsActions from "./actions"
+import { withI18n } from "react-i18next";
 
 export class UploadModal extends React.Component {
   render() {
     const { uploads, showAbort, showAbortModal } = this.props
+    const { t, i18n } = this.props;
     if (showAbort) {
       return <AbortConfirmModal />
     }
@@ -50,19 +52,27 @@ export class UploadModal extends React.Component {
     // If more than one: "Uploading files (5)..."
     // If only one: "Uploading myfile.txt..."
     let text =
-      "Uploading " +
+      `${t('uploading')}` +
       (numberUploading == 1
         ? `'${uploads[Object.keys(uploads)[0]].name}'`
-        : `files (${numberUploading})`) +
+        : `${t('objects')} (${numberUploading})`) +
       "..."
-
+    // if (percent == 100) {
+    //   // console.log('aaaa');
+    //   window.location.reload();
+    // }
+    document.querySelector(".page-load").classList.remove("pl-0","pl-1")
+    document.querySelector(".page-load").classList.add("pl-5")
     return (
       <div className="alert alert-info progress animated fadeInUp ">
         <button type="button" className="close" onClick={showAbortModal}>
           <span>×</span>
         </button>
         <div className="text-center">
-          <small>{text}</small>
+          <i>{text}</i>
+          {
+            percent < 100 ? '' : <i>{t('upSuccess')}</i>
+          }
         </div>
         <ProgressBar now={percent} />
         <div className="text-center">
@@ -88,4 +98,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(UploadModal)
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(UploadModal))

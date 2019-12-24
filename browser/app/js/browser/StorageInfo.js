@@ -18,25 +18,26 @@ import React from "react"
 import { connect } from "react-redux"
 import humanize from "humanize"
 import * as actionsCommon from "./actions"
-
+import { withI18n } from "react-i18next";
 export class StorageInfo extends React.Component {
   componentWillMount() {
     const { fetchStorageInfo } = this.props
     fetchStorageInfo()
   }
   render() {
-    const { used } = this.props.storageInfo
+    const { used } = this.props.storageInfo;
+    const { t, i18n } = this.props;
     return (
       <div className="feh-used">
-        <div className="fehu-chart">
+        {/* <div className="fehu-chart">
           <div style={{ width: 0 }} />
         </div>
         <ul>
           <li>
-            <span>Used: </span>
+            <span>{t('used')}: </span>
             {humanize.filesize(used)}
           </li>
-        </ul>
+        </ul> */}
       </div>
     )
   }
@@ -54,4 +55,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StorageInfo)
+export default connect(mapStateToProps, mapDispatchToProps)(withI18n()(StorageInfo))

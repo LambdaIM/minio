@@ -23,18 +23,23 @@ import React from "react"
 import ReactDOM from "react-dom"
 import { Router, Route } from "react-router-dom"
 import { Provider } from "react-redux"
+import { I18nextProvider } from 'react-i18next';
 
 import history from "./js/history"
 import configureStore from "./js/store/configure-store"
 import hideLoader from "./js/loader"
 import App from "./js/App"
 
+import i18n from './js/i18n.js'
+
 const store = configureStore()
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <App />
+      <I18nextProvider i18n={i18n}>
+        <App />
+      </I18nextProvider>
     </Router>
   </Provider>,
   document.getElementById("root")
