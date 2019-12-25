@@ -32,9 +32,9 @@ export const SET_POLICIES = "buckets/SET_POLICIES"
 export const fetchBuckets = () => {
   return function(dispatch) {
     return web.ListBuckets().then(res => {
-      const bucketList = res.buckets ? res.buckets.map(bucket => bucket) : []
+      // const bucketList = res.buckets ? res.buckets.map(bucket => bucket) : []
       const buckets = res.buckets ? res.buckets.map(bucket => bucket.name) : []
-      dispatch(setList(bucketList))
+      dispatch(setList(buckets))
       if (buckets.length > 0) {
         const { bucket, prefix } = pathSlice(history.location.pathname)
         if (bucket && buckets.indexOf(bucket) > -1) {
@@ -85,6 +85,7 @@ export const makeBucket = bucket => {
         bucketName: bucket
       })
       .then(() => {
+        console.info('- -')
         dispatch(addBucket(bucket))
         dispatch(selectBucket(bucket))
       })

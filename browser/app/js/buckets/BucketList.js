@@ -50,7 +50,7 @@ export class BucketList extends React.Component {
           <ul>
             {visibleBuckets.map(bucket => {
               // console.log(bucket);
-              return (<BucketContainer key={bucket.name} bucket={bucket} />)
+              return (<BucketContainer key={bucket} bucket={bucket} />)
             }
             )}
           </ul>
