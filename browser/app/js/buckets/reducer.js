@@ -42,6 +42,7 @@ export default (
         list: action.buckets
       }
     case actionsBuckets.ADD:
+      console.info('******')
       return {
         ...state,
         list: [action.bucket, ...state.list]
