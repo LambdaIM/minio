@@ -70,11 +70,11 @@ export class Path extends React.Component {
   bucketExists(bucketName) {
     const { buckets } = this.props
     var list=[];
-    buckets.forEach((item)=>{
-      list.push(item.name)
+    // buckets.forEach((item)=>{
+    //   list.push(item.name)
 
-    })
-    return list.includes(bucketName)
+    // })
+    return buckets.includes(bucketName)
   }
   async onSubmit(e) {
     console.info('---')
