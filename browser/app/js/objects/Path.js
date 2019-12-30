@@ -77,7 +77,7 @@ export class Path extends React.Component {
     return buckets.includes(bucketName)
   }
   async onSubmit(e) {
-    console.info('---')
+    // console.info('---')
     e.preventDefault()
     const { makeBucket, selectBucket } = this.props
     // all paths need to end in slash to display contents properly
@@ -147,11 +147,11 @@ export class Path extends React.Component {
               </a>
             </span>
             {path}
-            <OverlayTrigger placement="bottom" overlay={pathTooltip}>
+            {/* <OverlayTrigger placement="bottom" overlay={pathTooltip}>
               <a href="" onClick={e => this.onEditClick(e)} className="fe-edit">
                 <i className="fas fa-folder-plus" />
               </a>
-            </OverlayTrigger>
+            </OverlayTrigger> */}
           </React.Fragment>
         )}
       </h2>

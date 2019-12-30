@@ -73,11 +73,11 @@ var exports = {
     },
     proxy: {
       '/minio/webrpc': {
-	target: 'http://localhost:9677',
+	target: 'http://localhost:9000',
 	secure: false
       },
       '/minio/upload/*': {
-	target: 'http://localhost:9677',
+	target: 'http://localhost:9000',
 	secure: false
       },
       '/minio/download/*': {

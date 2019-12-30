@@ -29,7 +29,7 @@ export class StorageInfo extends React.Component {
     const { t, i18n } = this.props;
     return (
       <div className="feh-used">
-        <div className="fehu-chart">
+        {/* <div className="fehu-chart">
           <div style={{ width: 0 }} />
         </div>
         <ul>
@@ -37,7 +37,7 @@ export class StorageInfo extends React.Component {
             <span>{t('used')}: </span>
             {humanize.filesize(used)}
           </li>
-        </ul>
+        </ul> */}
       </div>
     )
   }
