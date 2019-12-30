@@ -91,6 +91,17 @@ export const uploadFile = file => {
       )
       return
     }
+
+    if(file.size>209715200) {
+      dispatch(
+        alertActions.set({
+          type: "danger",
+          message: `${i18next.t('fileSize')}`
+        })
+      )
+      return
+    }
+
     const currentPrefix = getCurrentPrefix(state)
     const objectName = `${currentPrefix}${file.name}`
     const uploadUrl = `${
