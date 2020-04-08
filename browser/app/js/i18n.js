@@ -10,6 +10,10 @@ const resources = {
       about: {
         "version": "Version",
         // ""
+        "tip": "Choose or create new path",
+        "bucket": "Create bucket",
+        "file": "Upload file",
+        "tip2": 'Please create bucket first'
       },
       "accessKey": "Access Key",
       "secretKey": "Secret Key",
@@ -50,7 +54,8 @@ const resources = {
       "sellerAddress": "Seller Address",
       "createTime": "Create Time",
       "exTime": "Expire Time",
-      "upSuccess": "File parsing is successful, please wait for the upload to complete"
+      "upSuccess": "File parsing is successful, please wait for the upload to complete",
+      "bn": "Bucket Name"
     }
   },
   zh_cn: {
@@ -59,6 +64,10 @@ const resources = {
       about: {
         "version": "版本",
         // ""
+        "tip": "选择或者创建一个路径",
+        "bucket": "创建空间",
+        "file": "上传文件",
+        "tip2": '请先创建空间'
       },
       "accessKey": "密钥",
       "secretKey": "私钥",
@@ -99,7 +108,8 @@ const resources = {
       "sellerAddress": "卖方地址",
       "createTime": "创建时间",
       "exTime": "过期时间",
-      "upSuccess": "文件解析成功,请等待上传完成"
+      "upSuccess": "文件解析成功,请等待上传完成",
+      "bn": "空间名字"
     }
 
   }

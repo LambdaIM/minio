@@ -18,7 +18,7 @@ import React from "react"
 import { connect } from "react-redux"
 import { Modal, ModalBody } from "react-bootstrap"
 import * as actionsBuckets from "./actions"
-
+import i18next from 'i18next';
 export class MakeBucketModal extends React.Component {
   constructor(props) {
     super(props)
@@ -60,7 +60,7 @@ export class MakeBucketModal extends React.Component {
               <input
                 className="ig-text"
                 type="text"
-                placeholder="Bucket Name"
+                placeholder={i18next.t('bn')}
                 value={this.state.bucketName}
                 onChange={e => this.setState({ bucketName: e.target.value })}
                 autoFocus
