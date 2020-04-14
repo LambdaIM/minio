@@ -21,7 +21,8 @@ import { OverlayTrigger, Tooltip } from "react-bootstrap"
 import { getCurrentBucket } from "../buckets/selectors"
 import * as actionsObjects from "./actions"
 import * as actionsBuckets from "../buckets/actions"
-
+import { Trans } from 'react-i18next';
+import i18next from 'i18next';
 export class Path extends React.Component {
   constructor(props) {
     super(props)
@@ -43,6 +44,12 @@ export class Path extends React.Component {
   onEditClick(e) {
     e.preventDefault()
     const { currentBucket, currentPrefix } = this.props
+
+    if (!currentBucket) {
+      alert(i18next.t('about.tip2'))
+      return
+    }
+
     this.setState(
       {
         isEditing: true,
@@ -69,7 +76,7 @@ export class Path extends React.Component {
   }
   bucketExists(bucketName) {
     const { buckets } = this.props
-    var list=[];
+    var list = [];
     // buckets.forEach((item)=>{
     //   list.push(item.name)
 
@@ -104,7 +111,7 @@ export class Path extends React.Component {
     }
   }
   render() {
-    const pathTooltip = <Tooltip id="tt-path">Choose or create new path</Tooltip>
+    const pathTooltip = <Tooltip id="tt-path"><Trans>about.tip</Trans></Tooltip>
     const { currentBucket, currentPrefix } = this.props
     let dirPath = []
     let path = ""
@@ -140,20 +147,20 @@ export class Path extends React.Component {
             </form>
           </ClickOutHandler>
         ) : (
-          <React.Fragment>
-            <span className="main">
-              <a href="" onClick={e => this.onPrefixClick(e, "")}>
-                {currentBucket}
-              </a>
-            </span>
-            {path}
-            <OverlayTrigger placement="bottom" overlay={pathTooltip}>
-              <a href="" onClick={e => this.onEditClick(e)} className="fe-edit">
-                <i className="fas fa-folder-plus" />
-              </a>
-            </OverlayTrigger>
-          </React.Fragment>
-        )}
+            <React.Fragment>
+              <span className="main">
+                <a href="" onClick={e => this.onPrefixClick(e, "")}>
+                  {currentBucket}
+                </a>
+              </span>
+              {path}
+              <OverlayTrigger placement="bottom" overlay={pathTooltip}>
+                <a href="" onClick={e => this.onEditClick(e)} className="fe-edit">
+                  <i className="fas fa-folder-plus" />
+                </a>
+              </OverlayTrigger>
+            </React.Fragment>
+          )}
       </h2>
     )
   }
