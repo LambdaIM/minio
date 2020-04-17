@@ -18,6 +18,7 @@ import Moment from "moment"
 import storage from "local-storage-fallback"
 import * as alertActions from "../alert/actions"
 import * as objectsActions from "../objects/actions"
+import * as actionsCommon from "../browser/actions"
 import { getCurrentBucket } from "../buckets/selectors"
 import { getCurrentPrefix } from "../objects/selectors"
 import { minioBrowserPrefix } from "../constants"
@@ -59,7 +60,7 @@ export const hideAbortModal = () => ({
 let requests = {}
 
 export const addUpload = (xhr, slug, size, name) => {
-  return function(dispatch) {
+  return function (dispatch) {
     requests[slug] = xhr
     dispatch(add(slug, size, name))
   }
@@ -67,8 +68,8 @@ export const addUpload = (xhr, slug, size, name) => {
 
 export const abortUpload = slug => {
   document.querySelector(".page-load").classList.remove("pl-5")
-  document.querySelector(".page-load").classList.add("pl-0","pl-1")
-  return function(dispatch) {
+  document.querySelector(".page-load").classList.add("pl-0", "pl-1")
+  return function (dispatch) {
     const xhr = requests[slug]
     if (xhr) {
       xhr.abort()
@@ -79,7 +80,7 @@ export const abortUpload = slug => {
 }
 
 export const uploadFile = file => {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const state = getState()
     const currentBucket = getCurrentBucket(state)
     if (!currentBucket) {
@@ -95,7 +96,7 @@ export const uploadFile = file => {
     const objectName = `${currentPrefix}${file.name}`
     const uploadUrl = `${
       window.location.origin
-    }${minioBrowserPrefix}/upload/${currentBucket}/${objectName}`
+      }${minioBrowserPrefix}/upload/${currentBucket}/${objectName}`
     const slug = `${currentBucket}-${currentPrefix}-${file.name}`
 
     let xhr = new XMLHttpRequest()
@@ -117,11 +118,10 @@ export const uploadFile = file => {
 
     dispatch(addUpload(xhr, slug, file.size, file.name))
 
-    xhr.onload = function(event) {
+    xhr.onload = function (event) {
       if (xhr.status == 401 || xhr.status == 403) {
         document.querySelector(".page-load").classList.remove("pl-5")
-        document.querySelector(".page-load").classList.add("pl-0","pl-1")
-        window.location.reload();
+        document.querySelector(".page-load").classList.add("pl-0", "pl-1")
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(
@@ -130,11 +130,13 @@ export const uploadFile = file => {
             message: `${i18next.t('n3')}`
           })
         )
+        // setTimeout(() => {
+        //   window.location.reload ();
+        // }, 5000);
       }
       if (xhr.status == 500 || xhr.status == 504) {
         document.querySelector(".page-load").classList.remove("pl-5")
-        document.querySelector(".page-load").classList.add("pl-0","pl-1")
-        window.location.reload();
+        document.querySelector(".page-load").classList.add("pl-0", "pl-1")
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(
@@ -143,11 +145,13 @@ export const uploadFile = file => {
             message: xhr.responseText
           })
         )
+        // setTimeout(() => {
+        //   window.location.reload ();
+        // }, 5000);
       }
       if (xhr.status == 200) {
         document.querySelector(".page-load").classList.remove("pl-5")
-        document.querySelector(".page-load").classList.add("pl-0","pl-1")
-        window.location.reload();
+        document.querySelector(".page-load").classList.add("pl-0", "pl-1")
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(
@@ -158,13 +162,13 @@ export const uploadFile = file => {
         )
         dispatch(bucketActions.fetchBuckets())
         dispatch(objectsActions.selectPrefix(currentPrefix))
+        dispatch(actionsCommon.fetchStorageInfo())
       }
     }
 
     xhr.upload.addEventListener("error", event => {
       document.querySelector(".page-load").classList.remove("pl-5")
-      document.querySelector(".page-load").classList.add("pl-0","pl-1")
-      window.location.reload();
+      document.querySelector(".page-load").classList.add("pl-0", "pl-1")
       dispatch(stop(slug))
       dispatch(
         alertActions.set({
@@ -172,6 +176,9 @@ export const uploadFile = file => {
           message: `${i18next.t('n4')} ${file.name} `
         })
       )
+      // setTimeout(() => {
+      //   window.location.reload ();
+      // }, 5000);
     })
 
     xhr.upload.addEventListener("progress", event => {
