@@ -59,7 +59,7 @@ export const hideAbortModal = () => ({
 let requests = {}
 
 export const addUpload = (xhr, slug, size, name) => {
-  return function(dispatch) {
+  return function (dispatch) {
     requests[slug] = xhr
     dispatch(add(slug, size, name))
   }
@@ -67,8 +67,8 @@ export const addUpload = (xhr, slug, size, name) => {
 
 export const abortUpload = slug => {
   document.querySelector(".page-load").classList.remove("pl-5")
-  document.querySelector(".page-load").classList.add("pl-0","pl-1")
-  return function(dispatch) {
+  document.querySelector(".page-load").classList.add("pl-0", "pl-1")
+  return function (dispatch) {
     const xhr = requests[slug]
     if (xhr) {
       xhr.abort()
@@ -79,7 +79,7 @@ export const abortUpload = slug => {
 }
 
 export const uploadFile = file => {
-  return function(dispatch, getState) {
+  return function (dispatch, getState) {
     const state = getState()
     const currentBucket = getCurrentBucket(state)
     if (!currentBucket) {
@@ -95,7 +95,7 @@ export const uploadFile = file => {
     const objectName = `${currentPrefix}${file.name}`
     const uploadUrl = `${
       window.location.origin
-    }${minioBrowserPrefix}/upload/${currentBucket}/${objectName}`
+      }${minioBrowserPrefix}/upload/${currentBucket}/${objectName}`
     const slug = `${currentBucket}-${currentPrefix}-${file.name}`
 
     let xhr = new XMLHttpRequest()
@@ -117,11 +117,10 @@ export const uploadFile = file => {
 
     dispatch(addUpload(xhr, slug, file.size, file.name))
 
-    xhr.onload = function(event) {
+    xhr.onload = function (event) {
       if (xhr.status == 401 || xhr.status == 403) {
         document.querySelector(".page-load").classList.remove("pl-5")
-        document.querySelector(".page-load").classList.add("pl-0","pl-1")
-        window.location.reload();
+        document.querySelector(".page-load").classList.add("pl-0", "pl-1")
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(
@@ -133,8 +132,7 @@ export const uploadFile = file => {
       }
       if (xhr.status == 500 || xhr.status == 504) {
         document.querySelector(".page-load").classList.remove("pl-5")
-        document.querySelector(".page-load").classList.add("pl-0","pl-1")
-        window.location.reload();
+        document.querySelector(".page-load").classList.add("pl-0", "pl-1")
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(
@@ -146,8 +144,7 @@ export const uploadFile = file => {
       }
       if (xhr.status == 200) {
         document.querySelector(".page-load").classList.remove("pl-5")
-        document.querySelector(".page-load").classList.add("pl-0","pl-1")
-        window.location.reload();
+        document.querySelector(".page-load").classList.add("pl-0", "pl-1")
         dispatch(hideAbortModal())
         dispatch(stop(slug))
         dispatch(
@@ -163,8 +160,7 @@ export const uploadFile = file => {
 
     xhr.upload.addEventListener("error", event => {
       document.querySelector(".page-load").classList.remove("pl-5")
-      document.querySelector(".page-load").classList.add("pl-0","pl-1")
-      window.location.reload();
+      document.querySelector(".page-load").classList.add("pl-0", "pl-1")
       dispatch(stop(slug))
       dispatch(
         alertActions.set({
