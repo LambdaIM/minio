@@ -18,6 +18,7 @@ import Moment from "moment"
 import storage from "local-storage-fallback"
 import * as alertActions from "../alert/actions"
 import * as objectsActions from "../objects/actions"
+import * as actionsCommon from "../browser/actions"
 import { getCurrentBucket } from "../buckets/selectors"
 import { getCurrentPrefix } from "../objects/selectors"
 import { minioBrowserPrefix } from "../constants"
@@ -166,6 +167,7 @@ export const uploadFile = file => {
         )
         dispatch(bucketActions.fetchBuckets())
         dispatch(objectsActions.selectPrefix(currentPrefix))
+        dispatch(actionsCommon.fetchStorageInfo())
       }
     }
 
