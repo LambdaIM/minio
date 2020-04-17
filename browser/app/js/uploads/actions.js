@@ -129,6 +129,9 @@ export const uploadFile = file => {
             message: `${i18next.t('n3')}`
           })
         )
+        setTimeout(() => {
+          window.location.reload ();
+        }, 5000);
       }
       if (xhr.status == 500 || xhr.status == 504) {
         document.querySelector(".page-load").classList.remove("pl-5")
@@ -141,6 +144,9 @@ export const uploadFile = file => {
             message: xhr.responseText
           })
         )
+        setTimeout(() => {
+          window.location.reload ();
+        }, 5000);
       }
       if (xhr.status == 200) {
         document.querySelector(".page-load").classList.remove("pl-5")
@@ -155,6 +161,9 @@ export const uploadFile = file => {
         )
         dispatch(bucketActions.fetchBuckets())
         dispatch(objectsActions.selectPrefix(currentPrefix))
+        setTimeout(() => {
+          window.location.reload ();
+        }, 5000);
       }
     }
 
@@ -168,6 +177,9 @@ export const uploadFile = file => {
           message: `${i18next.t('n4')} ${file.name} `
         })
       )
+      setTimeout(() => {
+        window.location.reload ();
+      }, 5000);
     })
 
     xhr.upload.addEventListener("progress", event => {
