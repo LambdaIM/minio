@@ -18,6 +18,7 @@ import Moment from "moment"
 import storage from "local-storage-fallback"
 import * as alertActions from "../alert/actions"
 import * as objectsActions from "../objects/actions"
+import * as actionsCommon from "../browser/actions"
 import { getCurrentBucket } from "../buckets/selectors"
 import { getCurrentPrefix } from "../objects/selectors"
 import { minioBrowserPrefix } from "../constants"
@@ -129,9 +130,9 @@ export const uploadFile = file => {
             message: `${i18next.t('n3')}`
           })
         )
-        setTimeout(() => {
-          window.location.reload ();
-        }, 5000);
+        // setTimeout(() => {
+        //   window.location.reload ();
+        // }, 5000);
       }
       if (xhr.status == 500 || xhr.status == 504) {
         document.querySelector(".page-load").classList.remove("pl-5")
@@ -144,9 +145,9 @@ export const uploadFile = file => {
             message: xhr.responseText
           })
         )
-        setTimeout(() => {
-          window.location.reload ();
-        }, 5000);
+        // setTimeout(() => {
+        //   window.location.reload ();
+        // }, 5000);
       }
       if (xhr.status == 200) {
         document.querySelector(".page-load").classList.remove("pl-5")
@@ -161,9 +162,7 @@ export const uploadFile = file => {
         )
         dispatch(bucketActions.fetchBuckets())
         dispatch(objectsActions.selectPrefix(currentPrefix))
-        setTimeout(() => {
-          window.location.reload ();
-        }, 5000);
+        dispatch(actionsCommon.fetchStorageInfo())
       }
     }
 
@@ -177,9 +176,9 @@ export const uploadFile = file => {
           message: `${i18next.t('n4')} ${file.name} `
         })
       )
-      setTimeout(() => {
-        window.location.reload ();
-      }, 5000);
+      // setTimeout(() => {
+      //   window.location.reload ();
+      // }, 5000);
     })
 
     xhr.upload.addEventListener("progress", event => {
