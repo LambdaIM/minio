@@ -47,7 +47,8 @@ func (iamOS *IAMObjectStore) getObjectAPI() ObjectLayer {
 	if iamOS.objAPI != nil {
 		return iamOS.objAPI
 	}
-	return newObjectLayerFn()
+	//return newObjectLayerFn()
+	return newIamObjectLayerFn()
 }
 
 func (iamOS *IAMObjectStore) setObjectAPI(objAPI ObjectLayer) {
