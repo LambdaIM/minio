@@ -19,17 +19,14 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"github.com/minio/mc/pkg/console"
-	"net/url"
-	"os"
-	"os/signal"
-	"strings"
-	"syscall"
-
 	"github.com/gorilla/mux"
 	"github.com/minio/cli"
+	"github.com/minio/mc/pkg/console"
 	xhttp "github.com/minio/minio/cmd/http"
 	"github.com/minio/minio/cmd/logger"
+	"os"
+	"os/signal"
+	"syscall"
 	"github.com/minio/minio/pkg/certs"
 )
 
@@ -39,65 +36,23 @@ func init() {
 }
 
 var (
-	gatewayCmd = cli.Command{
-		Name:            "gateway",
-		Usage:           "start object storage gateway",
+	iamGatewayCmd = cli.Command{
+		Name:            "iam-gateway",
+		Usage:           "start object storage gateway with iam enabled",
 		Flags:           append(ServerFlags, GlobalFlags...),
 		HideHelpCommand: true,
 	}
 )
 
-// RegisterGatewayCommand registers a new command for gateway.
-func RegisterGatewayCommand(cmd cli.Command) error {
+// RegisterIamGatewayCommand registers a new command for gateway.
+func RegisterIamGatewayCommand(cmd cli.Command) error {
 	cmd.Flags = append(append(cmd.Flags, ServerFlags...), GlobalFlags...)
-	gatewayCmd.Subcommands = append(gatewayCmd.Subcommands, cmd)
+	iamGatewayCmd.Subcommands = append(iamGatewayCmd.Subcommands, cmd)
 	return nil
 }
 
-// ParseGatewayEndpoint - Return endpoint.
-func ParseGatewayEndpoint(arg string) (endPoint string, secure bool, err error) {
-	schemeSpecified := len(strings.Split(arg, "://")) > 1
-	if !schemeSpecified {
-		// Default connection will be "secure".
-		arg = "https://" + arg
-	}
-
-	u, err := url.Parse(arg)
-	if err != nil {
-		return "", false, err
-	}
-
-	switch u.Scheme {
-	case "http":
-		return u.Host, false, nil
-	case "https":
-		return u.Host, true, nil
-	default:
-		return "", false, fmt.Errorf("Unrecognized scheme %s", u.Scheme)
-	}
-}
-
-// ValidateGatewayArguments - Validate gateway arguments.
-func ValidateGatewayArguments(serverAddr, endpointAddr string) error {
-	if err := CheckLocalServerAddr(serverAddr); err != nil {
-		return err
-	}
-
-	if endpointAddr != "" {
-		// Reject the endpoint if it points to the gateway handler itself.
-		sameTarget, err := sameLocalAddrs(endpointAddr, serverAddr)
-		if err != nil {
-			return err
-		}
-		if sameTarget {
-			return fmt.Errorf("endpoint points to the local gateway")
-		}
-	}
-	return nil
-}
-
-// StartGateway - handler for 'minio gateway <name>'.
-func StartGateway(ctx *cli.Context, gw Gateway) {
+// StartIamGateway - handler for 'minio iam-gateway <name>'.
+func StartIamGateway(ctx *cli.Context, gw Gateway) {
 	if gw == nil {
 		logger.FatalIf(errUnexpected, "Gateway implementation not initialized")
 	}
@@ -154,17 +109,9 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 
 	router := mux.NewRouter().SkipClean(true)
 
-	if globalEtcdClient != nil {
-		// Enable STS router if etcd is enabled.
-		registerSTSRouter(router)
-	}
-
-	enableConfigOps := gatewayName == "nas"
-	enableIAMOps := globalEtcdClient != nil
-
-	// Enable IAM admin APIs if etcd is enabled, if not just enable basic
+	// Enable IAM admin APIs, if not just enable basic
 	// operations such as profiling, server info etc.
-	registerAdminRouter(router, enableConfigOps, enableIAMOps)
+	registerAdminRouter(router, true, true)
 
 	// Add healthcheck router
 	registerHealthCheckRouter(router)
@@ -178,11 +125,9 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 	}
 
 	// Currently only NAS and S3 gateway support encryption headers.
-	encryptionEnabled := gatewayName == "s3" || gatewayName == "nas"
-	allowSSEKMS := gatewayName == "s3" // Only S3 can support SSE-KMS (as pass-through)
-
+	// Only S3 can support SSE-KMS (as pass-through)
 	// Add API router.
-	registerAPIRouter(router, encryptionEnabled, allowSSEKMS)
+	registerAPIRouter(router, true, false)
 
 	var getCert certs.GetCertificateFunc
 	if globalTLSCerts != nil {
@@ -226,21 +171,21 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 		logger.FatalIf(err, "Unable to initialize gateway backend")
 	}
 
-	// Populate existing buckets to the etcd backend
-	if globalDNSConfig != nil {
-		initFederatorBackend(newObject)
+	// (yaiba) monkey hack, iam sys need local file operation, make it to legacy configDir
+	iamFs, err := NewFSObjectLayer(globalConfigDir.Get())
+	if err != nil {
+		logger.FatalIf(err, "Unable to initialize iam layer")
 	}
 
-	if enableConfigOps {
+	{
 		// Create a new config system.
 		globalConfigSys = NewConfigSys()
 
 		// Load globalServerConfig from etcd
-		logger.LogIf(context.Background(), globalConfigSys.Init(newObject))
+		logger.LogIf(context.Background(), globalConfigSys.Init(iamFs))
 
-		// Start watching disk for reloading config, this
-		// is only enabled for "NAS" gateway.
-		globalConfigSys.WatchConfigNASDisk(newObject)
+		// Start watching disk for reloading config
+		globalConfigSys.WatchConfigNASDisk(iamFs)
 	}
 
 	// Load logger subsystem
@@ -263,23 +208,24 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 
 	// Create new IAM system.
 	globalIAMSys = NewIAMSys()
-	if enableIAMOps {
-		// Initialize IAM sys.
-		logger.LogIf(context.Background(), globalIAMSys.Init(newObject))
+	// Initialize IAM sys.
+	if err = globalIAMSys.Init(iamFs); err != nil {
+		logger.Fatal(err, "Unable to initialize IAM system")
 	}
 
 	// Create new policy system.
 	globalPolicySys = NewPolicySys()
-
 	// Initialize policy system.
-	go globalPolicySys.Init(newObject)
+	if err = globalPolicySys.Init(iamFs); err != nil {
+		logger.Fatal(err, "Unable to initialize policy system")
+	}
 
 	// Create new lifecycle system
 	globalLifecycleSys = NewLifecycleSys()
 
 	// Create new notification system.
 	globalNotificationSys = NewNotificationSys(globalServerConfig, globalEndpoints)
-	if enableConfigOps && newObject.IsNotificationSupported() {
+	if newObject.IsNotificationSupported() {
 		logger.LogIf(context.Background(), globalNotificationSys.Init(newObject))
 	}
 
@@ -288,26 +234,23 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 	// - compression
 	verifyObjectLayerFeatures("gateway "+gatewayName, newObject)
 
+	// Once endpoints are finalized, initialize the new iam object api.
+	globalIamObjLayerMutex.Lock()
+	globalIamObjectAPI = iamFs
+	globalIamObjLayerMutex.Unlock()
+
 	// Once endpoints are finalized, initialize the new object api.
 	globalObjLayerMutex.Lock()
 	globalObjectAPI = newObject
 	globalObjLayerMutex.Unlock()
 
-	// Once endpoints are finalized, initialize the new iam object api.
-	globalIamObjLayerMutex.Lock()
-	globalIamObjectAPI = globalObjectAPI
-	globalIamObjLayerMutex.Unlock()
-
 	// lamb custom startup message, always print
 	console.Println(colorBlue("\nGateway name:    ") + gw.Name())
-	console.Println(colorBlue("TLS enabled:     ") + fmt.Sprintf("%v\n", globalIsSSL))
+	console.Println(colorBlue("TLS enabled:     ") + fmt.Sprintf("%v", globalIsSSL))
+	console.Println(colorBlue("Iam config path: ") +  globalConfigDir.Get() + "\n")
 
 	// Prints the formatted startup message once object layer is initialized.
 	if !globalCLIContext.Quiet {
-		mode := globalMinioModeGatewayPrefix + gatewayName
-		// Check update mode.
-		checkUpdate(mode)
-
 		// Print a warning message if gateway is not ready for production before the startup banner.
 		if !gw.Production() {
 			logger.StartupMessage(colorYellow("               *** Warning: Not Ready for Production ***"))
@@ -321,4 +264,9 @@ func StartGateway(ctx *cli.Context, gw Gateway) {
 	globalBootTime = UTCNow()
 
 	handleSignals()
+}
+
+
+func GetIamSys() *IAMSys {
+	return globalIAMSys
 }

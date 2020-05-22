@@ -29,6 +29,16 @@ func newObjectLayerFn() (layer ObjectLayer) {
 	return
 }
 
+// (yaiba) To replace newObjectLayerFn()
+//  either point to actual object fs
+//                  or only iam fs
+func newIamObjectLayerFn() (layer ObjectLayer) {
+	globalIamObjLayerMutex.RLock()
+	layer = globalIamObjectAPI
+	globalIamObjLayerMutex.RUnlock()
+	return
+}
+
 func newCacheObjectsFn() CacheObjectLayer {
 	return globalCacheObjectAPI
 }

@@ -397,6 +397,11 @@ func serverMain(ctx *cli.Context) {
 	globalObjectAPI = newObject
 	globalObjLayerMutex.Unlock()
 
+	// Once endpoints are finalized, initialize the new iam object api.
+	globalIamObjLayerMutex.Lock()
+	globalIamObjectAPI = globalObjectAPI
+	globalIamObjLayerMutex.Unlock()
+
 	// Prints the formatted startup message once object layer is initialized.
 	printStartupMessage(getAPIEndpoints())
 
